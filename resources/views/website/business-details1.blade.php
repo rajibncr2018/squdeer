@@ -9,29 +9,7 @@ Squeedr
       <div class="upper-cmnsection">
          <div class="heading-uprlft">Business Details</div>
          <div class="upr-rgtsec">
-            <div class="col-sm-5">
-               <div id="custom-search-input">
-                  <div class="input-group ">
-                     <input type="text" class="  search-query form-control" placeholder="Search" />
-                     <span class="input-group-btn">
-                     <button class="btn btn-danger" type="button"> <span class=" glyphicon glyphicon-search"></span> </button>
-                     </span> 
-                  </div>
-               </div>
-            </div>
-            <div class="col-md-7">
-               <div class="full-rgt">
-                  <div class="dropdown custm-uperdrop">
-                     <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">Upcoming Dates <img src="{{asset('public/assets/website/images/arrow.png')}}" alt=""/></button>
-                     <ul class="dropdown-menu">
-                        <li><a href="#">JAN</a></li>
-                        <li><a href="#">FEB</a></li>
-                        <li><a href="#">MARCH</a></li>
-                     </ul>
-                  </div>
-                  <div class="filter-option"><a href="#">Show Filter <i class="fa fa-filter" aria-hidden="true"></i></a></div>
-               </div>
-            </div>
+            &nbsp;
          </div>
       </div>
       <div class="leftpan">
@@ -56,8 +34,16 @@ Squeedr
                         <div class="col-lg-6 col-md-6 col-sm-6">
                            <div class="form-details">
                               <label for="Profession">Profession</label>
-                              <select class="form-control">
-                                 <option>IT Services</option>
+                              <select class="form-control" name="profession">
+                                <option value="">Select profession</option>
+                                <?php
+                                foreach($professions as $key => $prof)
+                                {
+                                ?>
+                                <option value="<?=$prof->profession_id;?>"><?=$prof->profession;?></option>
+                                <?php
+                                }
+                                ?>
                               </select>
                               <label for="Business Name">Business Name</label>
                               <input class="form-control" type="text" />

@@ -45,6 +45,7 @@ Route::group(['prefix'=>'api'],function(){
     Route::any('/emailverification/{id}','Api\UsersController@emailverification');
     Route::post('/registration-step2','Api\UsersController@registration_step2');
     Route::post('/login','Api\UsersController@login');
+    Route::post('/logout','Api\UsersController@logout');
 
 });
 

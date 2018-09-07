@@ -4,21 +4,20 @@ var device_token_key;
 var user_request_key;
 
 function addCommonParams(data){
-
     if(typeof(user_no)!=undefined){
         //get this param value from cookie
-		if(typeof($.cookie("user_no"))!='undefined'){
-			if($.cookie("user_no") != ''){
-				user_no = $.cookie("user_no");
+		if(typeof($.cookie("sqd_user_no"))!='undefined'){
+			if($.cookie("sqd_user_no") != ''){
+				user_no = $.cookie("sqd_user_no");
 			}
 		}
         data.push({name:'user_no',value:user_no});
     }
     if(typeof(user_request_key)!=undefined){
         //get this param value from cookie
-		if(typeof($.cookie("user_request_key"))!='undefined'){
-			if($.cookie("user_request_key") != ''){
-				user_request_key = $.cookie("user_request_key");
+		if(typeof($.cookie("sqd_user_request_key"))!='undefined'){
+			if($.cookie("sqd_user_request_key") != ''){
+				user_request_key = $.cookie("sqd_user_request_key");
 			}
 		}
         data.push({name:'user_request_key',value:user_request_key});
@@ -29,9 +28,9 @@ function addCommonParams(data){
     }
     if(typeof(device_token_key)!='undefined'){
         //
-		if(typeof($.cookie("device_token_key"))!= 'undefined'){
-			if($.cookie("device_token_key") != ''){
-				device_token_key = $.cookie("device_token_key");
+		if(typeof($.cookie("sqd_device_token_key"))!= 'undefined'){
+			if($.cookie("sqd_device_token_key") != ''){
+				device_token_key = $.cookie("sqd_device_token_key");
 			}
 		}
 		
@@ -53,10 +52,10 @@ $('#logout').click(function () {
         dataType: "json",
         success: function(response) {
             if(response.response_status==1){
-                $.removeCookie("user_no", { path: '/' });
-                $.removeCookie("user_type", { path: '/' });
-                $.removeCookie("user_request_key", { path: '/' });
-                $.removeCookie("device_token_key", { path: '/' });
+                $.removeCookie("sqd_user_no", { path: '/' });
+                $.removeCookie("sqd_user_type", { path: '/' });
+                $.removeCookie("sqd_user_request_key", { path: '/' });
+                $.removeCookie("sqd_device_token_key", { path: '/' });
 
                 window.location=logout_url;
             }

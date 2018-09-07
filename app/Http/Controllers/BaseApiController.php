@@ -29,7 +29,7 @@ class BaseApiController extends BaseController
     public $response_status;
     public $response_message;
     public $limit;
-    public $logged_user_id;
+    public $logged_user_no;
     public $logged_user;
     public $date_format;
     public $tableObj;
@@ -39,7 +39,7 @@ class BaseApiController extends BaseController
     function __construct(Request $params){
         $this->limit=30;
         //$this->tablePrefix="iimp_";
-        $this->logged_user_id=0;
+        $this->logged_user_no=0;
         $this->logged_user=array();
         $this->response_status=0;
         $this->response_message='';
@@ -64,12 +64,13 @@ class BaseApiController extends BaseController
     // request validation section 
 
     public function validate_parameter($validate_type=0){
-        $user_id = $this->postParam->input('user_id');
+        $user_id = $this->postParam->input('user_no');
         $device_type = $this->postParam->input('device_type');
-        $device_unique_code = $this->postParam->input('device_unique_code');
+        $device_unique_code = $this->postParam->input('device_token_key');
         $user_request_key = $this->postParam->input('user_request_key');
-       
        // parameter validation section 
+       /* $authdata = $this->website_login_checked();
+        print_r($authdata); die();*/
        switch($validate_type){
         case 1:
             // if user no is empty
@@ -98,14 +99,14 @@ class BaseApiController extends BaseController
             $conditions=array(
                 array('user_id','=',$user_id),
                 array('device_type','=',$device_type),
-                array('haxkey','=',$user_request_key),
-                array('device_unique_code','=',$device_unique_code),
+                array('request_key','=',$user_request_key),
+                array('device_token_key','=',$device_unique_code),
             );
            
             $userSelectFields = array('user_type','username','name','email','mobile');
             $joins=array(
                 array(
-                    'join_with'=>$this->tableObj->tableNameUserHaxKey,
+                    'join_with'=>$this->tableObj->tableNameUserRequestKey,
                     'join_type'=>'inner',
                     'join_table'=>$this->tableObj->tableNameUser,
                     'join_table_alias'=>'UB',
@@ -115,7 +116,8 @@ class BaseApiController extends BaseController
                 ),
             );
             $selectFileds=array('user_id','device_type','device_unique_code');
-            $user = $this->common_model->fetchData($this->tableObj->tableNameUserHaxKey,$conditions,$selectFileds,$joins);
+            $user = $this->common_model->fetchData($this->tableObj->tableNameUserRequestKey,$conditions,$selectFileds,$joins);
+
             
             // If user details not found //
             if(empty($user)){
@@ -125,7 +127,7 @@ class BaseApiController extends BaseController
                 $this->json_output();
             }
             // Login the user //
-            $this->logged_user_id=$user_id;
+            $this->logged_user_no=$user_id;
             $this->logged_user=$user; // its a object
 
         break;
@@ -193,8 +195,10 @@ class BaseApiController extends BaseController
             $this->response_message = "";
         } 
         $responseData = array(
+            'response_status' => $this->response_status,
+            'response_message' => $this->response_message,
             'result' => $this->response_status,
-            'message' => $this->response_message,  
+            'message' => $this->response_message, 
         );
         if(is_array($responcedata) && !empty($responcedata)){
             $responseData = array_merge($responseData,$responcedata);
@@ -284,10 +288,10 @@ class BaseApiController extends BaseController
     public function generate_request_key($is_new_key=0)
     {
         $user_ip = $this->get_client_ip();
-        $user_no = $this->logged_user_no; 
+        $user_no = $this->logged_user_no;
         $has_key = md5(time().$user_no);
         $device_type = $this->device_type;
-        $device_token_key = $this->device_token_key;
+        $device_token_key = Session::getId(); 
         $device_push_key = '';
         // get time zone from ip 
         $user_timezone="";
@@ -336,10 +340,10 @@ class BaseApiController extends BaseController
     public function website_login_checked()
     {
         // Check & Set Coockie //
-        $user_no=(isset($_COOKIE['user_no']))?$_COOKIE['user_no']:0;
-        $user_type=(isset($_COOKIE['user_type']))?$_COOKIE['user_type']:0;
-        $user_request_key=(isset($_COOKIE['user_request_key']))?$_COOKIE['user_request_key']:'';
-        $device_token_key=(isset($_COOKIE['device_token_key']) && !empty($_COOKIE['device_token_key']))?$_COOKIE['device_token_key']:Session::getId();
+        $user_no=(isset($_COOKIE['sqd_user_no']))?$_COOKIE['sqd_user_no']:0;
+        $user_type=(isset($_COOKIE['sqd_user_type']))?$_COOKIE['sqd_user_type']:0;
+        $user_request_key=(isset($_COOKIE['sqd_user_request_key']))?$_COOKIE['sqd_user_request_key']:'';
+        $device_token_key=(isset($_COOKIE['sqd_device_token_key']) && !empty($_COOKIE['sqd_device_token_key']))?$_COOKIE['sqd_device_token_key']:Session::getId();
         $device_type="0";
         // Create Authentication Data//
         $authdata=array(
@@ -465,8 +469,79 @@ class BaseApiController extends BaseController
         return $ip;
     }
 
-    
 
+    //***** Drop down list *****//
+    public function master_data_list($table=true)
+    {   
+        $conditions = array(
+            array('is_blocked', '=', 0),
+        );
+
+        $data = $this->common_model->fetchDatas($table, $conditions);
+        return $data;
+
+    }
+
+    //***** Call CURL *****//
+
+    public function curl_call($url_func_name='',$post_data=array())
+    {
+       /* echo $url_func_name; 
+        echo "<pre>";
+        print_r($post_data); die();*/
+        $return_data=array();
+        // If function name not empty //
+        if(!empty($url_func_name)){
+            $ip = $this->get_client_ip();
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, url('api/'.$url_func_name));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            //curl_setopt($ch, CURLOPT_FOLLOWLOCATION,true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array("REMOTE_ADDR: $ip"));
+            $return_curl = curl_exec($ch); 
+            $error_no = curl_errno($ch);
+            curl_close($ch);
+            if($error_no == 0){
+                $return_data = json_decode($return_curl);
+                //print_r($return_data); die();
+                if($return_data->response_status == -1){
+                    $this->user_cookie_remove();
+                    return redirect(url('login'));
+                }
+            }
+            else{
+                // need to clean all the cookie
+                $this->user_cookie_remove();
+                return redirect(url('login'));
+            }
+        }
+        return $return_data;
+    }
+
+
+    //***** User Session / Cookie Removed (for Website) *****//
+
+    public function user_cookie_remove(){
+
+        $this->remove_all_cookies();
+
+    }
+
+    /** remove all the cookies */
+
+    public function remove_all_cookies()
+    {
+       // $cookie_params=array('user_no','user_type','user_request_key','device_token_key');
+        $cookie_params=array('sqd_user_no','sqd_user_type','sqd_user_request_key','sqd_device_token_key');
+        foreach($cookie_params as $cookie_name)
+        {
+            if(isset($_COOKIE[$cookie_name])){
+                unset($_COOKIE[$cookie_name]);
+                setcookie($cookie_name,'',time()-3600,'/');
+            }
+        }
+    }
 
 }
 

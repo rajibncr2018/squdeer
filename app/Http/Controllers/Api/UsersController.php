@@ -40,7 +40,7 @@ class UsersController extends ApiController {
 				array('password','=',md5($password)),
 				'or'=>array('email'=>$email,'username'=>$email)
 			);
-			$selectFields=array('id','user_type','is_email_verified','created_on','is_deleted');
+			$selectFields=array('id','user_type','is_email_verified','created_on','is_deleted','is_blocked');
 			$user = $this->common_model->fetchData($table_name,$conditions,$selectFields);
 			if(empty($user))
 			{
@@ -49,7 +49,7 @@ class UsersController extends ApiController {
 			else
 			{
 				//echo '<pre>'; print_r($user); exit;
-				$is_blocked = 0;
+				$is_blocked = $user->is_blocked;
 				if($is_blocked == 0)
 				{
 					$created_on = strtotime($user->created_on);
@@ -103,15 +103,18 @@ class UsersController extends ApiController {
 	}
 
 	/***Login ***/
-	public function logout(Request $request){
+	public function logout(Request $request)
+	{
+		//echo "+++++++++"; die();
 		$response_data=array();
 		// validate the requested param for access this service api
 		$this->validate_parameter(1);
 		// now remove the request key 
 		$deleteConds=array(
 			array('request_key','=',$this->user_request_key),
-			array('user_no','=',$this->logged_user_no),
+			array('user_id','=',$this->logged_user_no),
 		);
+		
 		$this->common_model->removeDatas($this->tableObj->tableNameUserRequestKey,$deleteConds);
 		//remove all the cookies 
 		$this->remove_all_cookies();

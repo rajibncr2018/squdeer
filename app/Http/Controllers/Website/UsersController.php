@@ -29,7 +29,7 @@ class UsersController extends ApiController {
         // Check User Login. If logged in redirect to dashboard //
 		$authdata = $this->website_login_checked();
 		if((!empty($authdata['user_no']) || $authdata['user_no'] > 0 ) && !empty($authdata['user_request_key'])){
-			//$this->remove_all_cookies(); // for manualy cookie remove testing
+			$this->remove_all_cookies(); // for manualy cookie remove testing
 			return redirect('/dashboard');
 		}
         return view('website.user.login.login');
@@ -37,10 +37,28 @@ class UsersController extends ApiController {
 
 	//***** logout section *****//
 
+	
+	//***** logout section *****//
 	public function logout()
 	{
-		setcookie('user_id', '', time() + (86400 * 30), "/");
-		return redirect('/login');
+		// Check User Login. If not logged in redirect to login page //
+		$authdata = $this->website_login_checked();
+		if((empty($authdata['user_no']) || ($authdata['user_no']<=0)) || (empty($authdata['user_request_key']))){
+			return redirect('/login');
+		}
+		// API call //
+		$post_data = $authdata;
+		//print_r($post_data); die();
+		$url_func_name="logout";
+		$return = $this->curl_call($url_func_name,$post_data);
+		// Check response status. If success return data //
+		if(isset($return->response_status)){
+			return redirect('/login');
+		}
+		else{
+			$this->remove_all_cookies();
+			return $return;
+		}
 	}
 
 
@@ -73,13 +91,8 @@ class UsersController extends ApiController {
 
 	public function registration_step1(Request $data)
 	{
-		$timezones = $this->timeZone();
-		//$data['timezones'] = $timezones;
-		$conditions = array(
-                        array('is_blocked', '=', 0),
-                    );
-		$data['professions'] = $this->common_model->fetchDatas('profession',$conditions);
-		$data['country'] = $this->common_model->fetchDatas('country_master',$conditions);
+		$data['professions'] = $this->master_data_list($table=$this->tableObj->tableNameProfession);
+		$data['country'] = $this->master_data_list($table=$this->tableObj->tableNameCountry);
         return view('website.user.registration.registration1', $data);
 	}
 
@@ -89,19 +102,12 @@ class UsersController extends ApiController {
 		$conditions = array(
                         array('is_blocked', '=', 0),
                     );
-		$data['category'] = $this->common_model->fetchDatas('categories',$conditions);
-		$data['currency'] = $this->common_model->fetchDatas('currency',$conditions);
+		$data['category'] = $this->master_data_list($table=$this->tableObj->tableNameCategory);
+		$data['currency'] = $this->master_data_list($table=$this->tableObj->tableNameCurrency);
         return view('website.user.registration.registration2',$data);
 	}
 
-	public function registration_step2_process(Request $data)
-	{
-
-		\Session::flash('success_message_register', "Successfully register."); 
-	     return redirect('login');
-        
-	}
-
+	
 	//***** Thank You *****//
 	public function thank_you()
 	{
@@ -111,7 +117,7 @@ class UsersController extends ApiController {
 
 	public function dashboard()
 	{
-
+		
 		// Check User Login. If not logged in redirect to login page //
 		$authdata = $this->website_login_checked();
 		if((empty($authdata['user_no']) || ($authdata['user_no']<=0)) || (empty($authdata['user_request_key'])))
@@ -127,8 +133,11 @@ class UsersController extends ApiController {
 		// Check User Login. If logged in redirect to dashboard //
 		$authdata = $this->website_login_checked();
 		if((!empty($authdata['user_no']) || $authdata['user_no'] > 0 ) && !empty($authdata['user_request_key'])){
+			$userData = $this->master_data_list($table=$this->tableObj->tableNameUser);	
+			$data['country'] = $this->master_data_list($table=$this->tableObj->tableNameCountry);
+			$data['professions'] = $this->master_data_list($table=$this->tableObj->tableNameProfession);
 			//$this->remove_all_cookies(); // for manualy cookie remove testing
-			return view('website.business-details1');
+			return view('website.business-details1', $data);
 		}
         return view('website.user.login.login');
 	}

@@ -91,10 +91,12 @@ $('#loginform').validate({
             dataType: "json",
             success: function(response) {
                 console.log(response);
+                return false;
                 if(response.result==1){
                     var user_no = response.user.user_no;
                     var user_type = response.user.user_type;
                     var user_request_key = response.user.user_request_key;
+                    var device_token_key = "";
                     //console.log(data['0']);
                     // get the user no and the request key for farther service calls
                     if($('input[name="remember_me"]').is(':checked')){
@@ -105,10 +107,12 @@ $('#loginform').validate({
                         $.cookie("UserPassword", '');
                     }
 
-                    $.cookie("user_no", user_no, { expires: 30, path:'/' });
-                    $.cookie("user_type", user_type, { expires: 30, path:'/' });
-                    $.cookie("user_request_key", user_request_key, { expires: 30, path:'/' });
-                    $.cookie("device_token_key", device_token_key, { expires: 30, path:'/' });
+                    $.cookie("sqd_user_no", user_no, { expires: 30, path:'/' });
+                    $.cookie("sqd_user_type", user_type, { expires: 30, path:'/' });
+                    $.cookie("sqd_user_request_key", user_request_key, { expires: 30, path:'/' });
+                    $.cookie("sqd_device_token_key", device_token_key, { expires: 30, path:'/' });
+
+                    
                     var url = "{{url('/dashboard')}}";
                     console.log(url);
                     //alert(url);
