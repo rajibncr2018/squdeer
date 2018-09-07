@@ -471,15 +471,17 @@ class BaseApiController extends BaseController
 
 
     //***** Drop down list *****//
-    public function master_data_list($table=true)
+    public function master_data_list($table='')
     {   
-        $conditions = array(
-            array('is_blocked', '=', 0),
-        );
-
-        $data = $this->common_model->fetchDatas($table, $conditions);
+        $data = array();
+        if(!empty($table)){
+            $conditions = array(
+                array('is_blocked', '=', 0),
+                array('is_deleted', '=', 0)
+            );
+            $data = $this->common_model->fetchDatas($table, $conditions);
+        } 
         return $data;
-
     }
 
     //***** Call CURL *****//

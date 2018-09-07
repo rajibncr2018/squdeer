@@ -91,7 +91,6 @@ $('#loginform').validate({
             dataType: "json",
             success: function(response) {
                 console.log(response);
-                return false;
                 if(response.result==1){
                     var user_no = response.user.user_no;
                     var user_type = response.user.user_type;

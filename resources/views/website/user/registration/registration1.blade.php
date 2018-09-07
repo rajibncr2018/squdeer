@@ -87,7 +87,7 @@
                            <?php
                            foreach ($country as $key => $value)
                            {
-                              echo "<option value='".$value->id."'>".$value->country_name."</option>";
+                              echo "<option value='".$value->country_no."'>".$value->country_name."</option>";
                            }
                            ?>
                         </select>
