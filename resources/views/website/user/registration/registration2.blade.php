@@ -32,7 +32,6 @@
                   <h2>Resource, Services <br> & Pack passes </h2>
                </div>
                <div class="col-lg-5 col-md-6 col-sm-6 from-reg1">
-<<<<<<< HEAD
                   <form class="form-horizontal" action="{{ url('api/registration-step2') }}" method="post" autocomplete="off" id="registration-form-two">
                      <div class="clone-div">
                         <div class="form-group">
@@ -126,107 +125,6 @@
                            <div class="col-md-4">
                               <a href="" class="add-new"><i class="fa fa-plus"></i> Add New</a>
                            </div>
-=======
-                  <form class="form-horizontal" action="{{ url('registration-step2-process') }}" method="post" autocomplete="off">
-                     <input type="text" name="count" value="">
-                     <div>
-                        <div class="form-group">
-                            <img src="{{asset('public/assets/website/images/reg-icon-category.png')}}">
-                            <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="category" id="category" required="">
-                            <option value="">Select Category </option>
-                            <?php
-                            foreach ($category as $key => $value)
-                            {
-                                echo "<option value='".$value->category_id."'>".$value->category."</option>";
-                            }
-                            ?>
-                            <option value="new">New Category </option>
-                            </select>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="row" style="display: none;" id="new-category-row">
-                            <div class="col-md-12">
-                            <div class="form-group">
-                                <img src="{{asset('public/assets/website/images/reg-icon-category.png')}}">
-                                <input type="text" class="form-control" placeholder="Category Name " name="new_category_name">
-                                <div class="clearfix"></div>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                            <div class="form-group">
-                                <img src="{{asset('public/assets/website/images/reg-icon-category.png')}}">
-                                <input type="text" class="form-control" placeholder="Service Name " name="service_name">
-                                <div class="clearfix"></div>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                            <div class="form-group">
-                                <img src="{{asset('public/assets/website/images/reg-icon-currency.png')}}">
-                                <input type="text" class="form-control" placeholder="Cost " name="cost" required="">
-                                <div class="clearfix"></div>
-                            </div>
-                            </div>
-                            <div class="col-md-6 drop-sm">
-                            <div class="form-group">
-                                <img src="{{asset('public/assets/website/images/reg-icon-currency.png')}}">
-                                <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="profession"  name="currency" required="" id="" required="">
-                                    <option value="">Select Currency </option>
-                                    <?php
-                                    foreach ($currency as $key => $value)
-                                    {
-                                        echo "<option value='".$value->currency_id."'>".$value->currency."</option>";
-                                    }
-                                    ?>
-                                </select>
-                                <div class="clearfix"></div>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <img src="{{asset('public/assets/website/images/reg-icon-duration.png')}}">
-                            <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="profession" name="duration" required="">
-                            <option value="">Select Duration </option>
-                            <option value="15 min">15 min </option>
-                            <option value="30 min">30 min </option>
-                            <option value="45 min">45 min </option>
-                            <option value="60 min">60 min </option>
-                            <option value="Custom min">Custom min </option>
-                            </select>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                            <a href="" class="tg-btn-ac user-status" id="one-to-one">One to One</a>
-                            </div>
-                            <div class="col-md-3">
-                            <a href="" class="tg-btn user-status" id="group">Group</a>
-                            </div>
-                            <div class="col-md-5" style="display: none;" id="add-group-div">
-                            <div class="form-group">
-                                <img src="{{asset('public/assets/website/images/reg-icon-capacity.png')}}">
-                                <input type="text" class="form-control" placeholder="Capacity ">
-                                <div class="clearfix"></div>
-                            </div>
-                            </div>
-                        </div>
-                     </div>
-
-                     <div id="TextBoxesGroup"></div>
-
-                     <div class="row">
-                        <div class="col-md-12">
-                           &nbsp;
-                        </div>
-                        <div class="col-md-4">
-                           <a href="javascript:void(0)" class="add-new" id="addButton"><i class="fa fa-plus"></i> Add New</a>
-                        </div>
-                        <div class="col-md-4">
-                           <a href="javascript:void(0)" class="add-new" id="removeButton" style="display:none"><i class="fa fa-minus"></i> Remove</a>
->>>>>>> e6a55f6927ed13d592b921ae0d4e92ddf7cf840a
                         </div>
                      <button type="submit" id="submit">Submit</button>
                      <div class="clearfix"></div>
@@ -461,48 +359,5 @@
         });
       //================Submit AJAX request ==================
       </script>
-
-    <script type="text/javascript">
-
-        $(document).ready(function(){
-                var counter = 0;
-                $("#addButton").click(function () {
-                    // alert(counter);   
-                    counter++;
-                    $('#removeButton').show();
-                    if(counter==20){
-                        $('#addButton').hide();
-                    } 
-                    
-                    var newTextBoxDiv = $(document.createElement('div')).attr("id", 'TextBoxDiv' + counter);
-                    newTextBoxDiv.after().html('<div><div class="form-group"><img src=""><select class="selectpicker" data-show-subtext="true" data-live-search="true" name="category" id="category" required=""><option value="">Select Category </option><?php foreach ($category as $key => $value) { ?> "<option value="<?php echo $value->category_id;?>"><?php echo $value->category;?></option>" <?php } ?> <option value="new">New Category </option> </select> <div class="clearfix"></div></div>\
-                        <div class="row" style="display: none;" id="new-category-row"><div class="col-md-12"><div class="form-group"><img src=""><input type="text" class="form-control" placeholder="Category Name " name="new_category_name"><div class="clearfix"></div></div></div></div>\
-                        <div class="row"><div class="col-md-12"><div class="form-group"><img src=""><input type="text" class="form-control" placeholder="Service Name " name="service_name"><div class="clearfix"></div></div></div></div></div>');
-                
-                    newTextBoxDiv.appendTo("#TextBoxesGroup");
-                    
-                    $('#count').val(counter);
-                });
-
-                $("#removeButton").click(function () {
-                //alert(counter);
-                    if(counter==20)
-                    {
-                        $('#addButton').show();
-                    }  
-                    $("#TextBoxDiv" + counter).remove();
-                
-                    if(counter==1){
-                    $("#TextBoxDiv" + counter).remove();
-                    $('#removeButton').hide();
-                    }
-                    counter--;
-                    $('#count').val(counter);
-                });
-                    
-        });
-    
-    </script>
-      
    </body>
 </html>
