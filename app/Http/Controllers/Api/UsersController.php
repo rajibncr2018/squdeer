@@ -498,7 +498,6 @@ class UsersController extends ApiController {
 	public function registration_step2(Request $request)
 	{
 		$response_data=array();
-
 		$category = $request->input('category');
 		$new_category_name = $request->input('new_category_name');
 		$service = $request->input('service');
@@ -529,11 +528,11 @@ class UsersController extends ApiController {
 
 	    	if($duration[$key] == "Custom")
 	    	{
-	    		$duration = $custom_duration[$key];
+	    		$duration_new = $custom_duration[$key];
 	    	}
 	    	else
 	    	{
-	    		$duration = $duration[$key];
+	    		$duration_new = $duration[$key];
 	    	}
 
 	    	$param = array(
@@ -542,7 +541,7 @@ class UsersController extends ApiController {
 					'service_name' => $service[$key],
 					'cost' => $cost[$key],
 					'currency_id' => $currency[$key],
-					'duration' => $duration,
+					'duration' => $duration_new,
 					'capacity' => $capacity[$key],
 			);
 
@@ -550,11 +549,89 @@ class UsersController extends ApiController {
 	    	$this->common_model->insert_data_get_id($this->tableObj->tableUserService, $param);
 	    	$count++;
 	    }
+
+	    //print_r($param); die();
 			
 		$this->response_status='1';
 		$this->response_message="Verification link send to your email.";
 
 		// generate the service / api response
+		$this->json_output($response_data);
+	}
+
+	public function update_contact_info(Request $request)
+	{
+		$response_data=array();
+		$business_name = $request->input('business_name');
+		$business_location = $request->input('business_location');
+		$street_number = $request->input('street_number');
+		$route = $request->input('route');
+		$city = $request->input('city');
+		$state = $request->input('state');
+		$mobile = $request->input('mobile');  
+		$office_phone = $request->input('office_phone');
+		$skype_id = $request->input('skype_id');
+		$zip_code = $request->input('zip_code');
+		$business_description = $request->input('business_description');
+
+
+		$updateData = array(
+				'business_name' => $business_name,
+				'business_location' => $business_location,
+				'street_number' => $street_number,
+				'route' => $route,
+				'city' => $city,
+				'state' => $state,
+				'mobile' => $mobile,
+				'office_phone' => $office_phone,
+				'skype_id' => $skype_id,
+				'zip_code' => $zip_code,
+				'business_description' => $business_description,
+		);
+
+		$user_no = $_COOKIE['sqd_user_no'];
+
+		$updateCond=array(
+						array('id','=',$user_no)
+					);
+
+		$this->common_model->update_data($this->tableObj->tableNameUser,$updateCond,$updateData);
+
+
+		$this->response_status='1';
+		$this->response_message="Business contact info updated successfully.";
+
+		$this->json_output($response_data);
+	}
+
+	public function update_logo_social(Request $request)
+	{
+		$response_data=array();
+		$facebook_link = $request->input('facebook_link');
+		$twitter_link = $request->input('twitter_link');
+		$linked_in_link = $request->input('linked_in_link');
+		$user_wesite_link = $request->input('user_wesite_link');
+
+
+		$updateData = array(
+				'facebook_link' => $facebook_link,
+				'twitter_link' => $twitter_link,
+				'linked_in_link' => $linked_in_link,
+				'user_wesite_link' => $user_wesite_link,
+		);
+
+		$user_no = $_COOKIE['sqd_user_no'];
+
+		$updateCond=array(
+						array('id','=',$user_no)
+					);
+
+		$this->common_model->update_data($this->tableObj->tableNameUser,$updateCond,$updateData);
+
+
+		$this->response_status='1';
+		$this->response_message="Social info updated successfully.";
+
 		$this->json_output($response_data);
 	}
 

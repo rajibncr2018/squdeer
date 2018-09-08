@@ -19,6 +19,8 @@
       <link href="{{asset('public/assets/website/css/custom-selectbox.css')}}" rel="stylesheet">
       <link href="{{asset('public/assets/website/css/custom.css')}}" rel="stylesheet">
       <link href="{{asset('public/assets/website/css/slide-menu.css')}}" rel="stylesheet">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.css">
+      <link href="{{asset('public/assets/website/css/ncrts.css')}}" rel="stylesheet">
       <link rel="stylesheet" href="{{asset('public/assets/website/css/owl.carousel.min.css')}}">
       <script type="text/javascript">
         var authDatas={user_no:0};
@@ -31,6 +33,10 @@
    <?php 
    $basicdatas = App\Http\Controllers\BaseApiController::category_list();
    ?>
+      <div class="animationload" style="display: none;">
+            <div class="osahanloading"></div>
+      </div>
+
       <header class="showDekstop clearfix">
          <div class="container-custm">
             <div class="leftpan">
@@ -84,7 +90,7 @@
             <li class="c-menu__item"><a href="#" class="c-menu__link"><img src="{{asset('public/assets/website/images/settings-icon/privacy.png')}}" alt=""> Privacy Settings</a> <span>Control your information is... </span> </li>
             <li class="c-menu__item"><a href="{{ url('reports') }}" class="c-menu__link"><img src="{{asset('public/assets/website/images/settings-icon/statistics.png')}}" alt=""> Reports</a> <span>Add, edit or delete statistics</span> </li>
             <li class="c-menu__item"><a href="{{ url('settings-business-hours') }}" class="c-menu__link"><img src="{{asset('public/assets/website/images/settings-icon/business.png')}}" alt=""> Business Hours</a> <span>Link service to business hours</span> </li>
-            <li class="c-menu__item"><a href="{{ url('business-details1') }}" class="c-menu__link"><img src="{{asset('public/assets/website/images/settings-icon/businessdetails.png')}}" alt=""> Business Details</a> <span>Address, Timezone, Currency </span> </li>
+            <li class="c-menu__item"><a href="{{ url('business-contact-info') }}" class="c-menu__link"><img src="{{asset('public/assets/website/images/settings-icon/businessdetails.png')}}" alt=""> Business Details</a> <span>Address, Timezone, Currency </span> </li>
             <li class="c-menu__item"><a href="{{ url('booking-rules') }}" class="c-menu__link"><img src="{{asset('public/assets/website/images/settings-icon/booking-rules.png')}}" alt=""> Booking Rules</a> <span>Control how, what, when</span> </li>
             <li class="c-menu__item"><a href="{{ url('notification-settings') }}" class="c-menu__link"><img src="{{asset('public/assets/website/images/settings-icon/notification.png')}}" alt=""> Notification</a> <span>Control email and text alerts</span> </li>
             <li class="c-menu__item"><a href="#" onclick="showSqeeder();" class="c-menu__link"><img src="{{asset('public/assets/website/images/settings-icon/sqeedr.png')}}" alt=""> Your Squeedr Page</a> <span>Add, edit or delete info</span> </li>
@@ -1617,6 +1623,8 @@
         });
       </script>
 
+      <script src="{{asset('public/assets/website/js/ncrts.js')}}"></script>
       @yield('custom_js')
+      
    </body>
 </html>

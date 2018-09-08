@@ -31,6 +31,8 @@ Route::group(['prefix'=>'api'],function(){
     Route::post('/registration-step2','Api\UsersController@registration_step2');
     Route::post('/login','Api\UsersController@login');
     Route::post('/logout','Api\UsersController@logout');
+    Route::post('/update-contact-info','Api\UsersController@update_contact_info');
+    Route::post('/update-logo-social','Api\UsersController@update_logo_social');
 
     Route::post('/add_staff','Api\StaffsController@add_staff');
     Route::post('/staff_list','Api\StaffsController@staff_list');
@@ -53,7 +55,9 @@ Route::group(['prefix'=>''],function(){
     Route::get('/dashboard','Website\UsersController@dashboard');
     Route::get('/logout', 'Website\UsersController@logout');
     Route::any('/thank-you','Website\UsersController@thank_you');
-    
+
+    Route::get('/business-contact-info','Website\UsersController@business_contact_info');
+    Route::get('/business-logo-social-network','Website\UsersController@business_logo_social_network');
 
 
     //Only for link purpose
@@ -73,7 +77,7 @@ Route::group(['prefix'=>''],function(){
     Route::get('/settings-membership','Website\UsersController@settings_membership');
     Route::get('/integration','Website\UsersController@integration');
     Route::get('/settings-business-hours','Website\UsersController@settings_business_hours');
-    Route::get('/business-details1','Website\UsersController@business_details1');
+    
     Route::get('/business-details2','Website\UsersController@business_details2');
     Route::get('/invitees','Website\UsersController@invitees');
     Route::get('/services','Website\UsersController@services');

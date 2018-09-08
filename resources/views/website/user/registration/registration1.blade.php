@@ -36,15 +36,6 @@
                </div>
                
                <div class="col-md-5 col-sm-6 from-reg1">
-                  <!--  <div class="alert alert-danger alert-dismissible margin-t-10" style="margin-bottom:15px;" id="success-message" style="display: none;">
-                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                     <p><i class="icon fa fa-warning"></i><strong>Sorry!</strong>User name already exist.</p>
-                   </div>
-
-                   <div class="alert alert-success alert-dismissible margin-t-10" style="margin-bottom:15px;">
-                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                     <p><i class="icon fa fa-check"></i><strong>Success!</strong>User name already exist.</p>
-                   </div> -->
                   <div class="reg-type">
                      <a href="" class="active user-status" id="1">Individual</a> &nbsp; &nbsp;
                      <a href="" class="user-status" id="2">Business</a>
@@ -144,7 +135,7 @@
       //================Custom validation for 10 digit phone====================
       $.validator.addMethod("phoneUS", function (phone_number, element) {
         phone_number = phone_number.replace(/\s+/g, "");
-        return this.optional(element) || phone_number.length > 10 || phone_number.length <= 12 && phone_number.match(/^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{6}$/);
+        return this.optional(element) || phone_number.length > 11 && phone_number.length < 14;
       }, "Please specify a valid phone number with country prefix.");
       //================Custom validation for 10 digit phone====================
       </script>
@@ -253,6 +244,15 @@
             }
         });
       //================Submit AJAX request ==================
+      </script>
+      <script type="text/javascript">
+        $(function() {
+          var txt = $("#user_name");
+          var func = function() {
+            txt.val(txt.val().replace(/\s/g, ''));
+          }
+          txt.keyup(func).blur(func);
+        });
       </script>
    </body>
 </html>
