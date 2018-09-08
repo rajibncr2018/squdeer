@@ -484,6 +484,23 @@ class BaseApiController extends BaseController
         return $data;
     }
 
+
+    public static function category_list(){
+        $data = array();
+        $obj = new Request();
+        $ci = new BaseApiController($obj);
+        $table = $ci->tableObj->tableNameCategory;
+        $conditions = array(
+            array('is_blocked', '=', 0),
+            array('is_deleted', '=', 0)
+        );
+        $category_list = $ci->common_model->fetchDatas($table, $conditions);
+
+        $data=array('category_list'=>$category_list);
+        //echo '<pre>'; print_r($data); exit;
+        return $data;
+    }
+
     //***** Call CURL *****//
 
     public function curl_call($url_func_name='',$post_data=array())

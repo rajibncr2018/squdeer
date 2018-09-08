@@ -96,8 +96,8 @@ class common_model extends Model {
 
 
     public function insert_data_get_id($table, $data) {
-        $data['created_on'] = date('Y-m-d H:i:s');
-        $data['updated_on'] = date('Y-m-d H:i:s');
+        $data['create_at'] = date('Y-m-d H:i:s');
+        $data['update_at'] = date('Y-m-d H:i:s');
 
         $insert_data = DB::table($table)->insertGetId($data);
         return $insert_data;

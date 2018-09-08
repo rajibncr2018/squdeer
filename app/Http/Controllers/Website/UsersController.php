@@ -36,9 +36,6 @@ class UsersController extends ApiController {
 	}
 
 	//***** logout section *****//
-
-	
-	//***** logout section *****//
 	public function logout()
 	{
 		// Check User Login. If not logged in redirect to login page //
@@ -202,12 +199,33 @@ class UsersController extends ApiController {
 
 	public function staff_details()
 	{
-		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
-		{
-			return view('website.staff-details');
+		// Check User Login. If not logged in redirect to login page //
+		$authdata = $this->website_login_checked();
+		if((empty($authdata['user_no']) || ($authdata['user_no']<=0)) || (empty($authdata['user_request_key']))){
+           return redirect('/login');
 		}
-
-		return view('website.staff-details');
+		// Call API //
+		$post_data = $authdata;
+		$post_data['page_no']=1;
+		$data=array(
+			'staff_list'=>array(),
+			'authdata'=>$authdata
+		);
+		$url_func_name="staff_list";
+		$return = $this->curl_call($url_func_name,$post_data);
+		
+		// Check response status. If success return data //		
+		if(isset($return->response_status)){
+			if($return->response_status == 1){
+				$data['staff_list'] = $return->staff_list;
+			}
+			//echo '<pre>'; print_r($data); exit;
+			return view('website.staff.staff-details')->with($data);
+		}
+		else{
+			return $return;
+		}
+		//return view('website.staff.staff-details');
 	}
 
 	public function booking_options()

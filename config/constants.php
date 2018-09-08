@@ -10,6 +10,7 @@ return [
         'user' => 'user',
         'user_service' => 'user_service',
         'user_token' => 'user_token',
+        'staff' => 'staff',
 
 
     ],
