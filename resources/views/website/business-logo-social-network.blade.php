@@ -9,42 +9,20 @@ Squeedr
       <div class="upper-cmnsection">
          <div class="heading-uprlft">Business Details</div>
          <div class="upr-rgtsec">
-            <div class="col-sm-5">
-               <div id="custom-search-input">
-                  <div class="input-group ">
-                     <input type="text" class="  search-query form-control" placeholder="Search" />
-                     <span class="input-group-btn">
-                     <button class="btn btn-danger" type="button"> <span class=" glyphicon glyphicon-search"></span> </button>
-                     </span> 
-                  </div>
-               </div>
-            </div>
-            <div class="col-md-7">
-               <div class="full-rgt">
-                  <div class="dropdown custm-uperdrop">
-                     <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">Upcoming Dates <img src="{{asset('public/assets/website/images/arrow.png')}}" alt=""/></button>
-                     <ul class="dropdown-menu">
-                        <li><a href="#">JAN</a></li>
-                        <li><a href="#">FEB</a></li>
-                        <li><a href="#">MARCH</a></li>
-                     </ul>
-                  </div>
-                  <div class="filter-option"><a href="#">Show Filter <i class="fa fa-filter" aria-hidden="true"></i></a></div>
-               </div>
-            </div>
+            &nbsp;
          </div>
       </div>
       <div class="leftpan">
          <div class="left-menu">
             <ul>
-               <li><a href="{{ url('business-details1') }}" > Business Contact Info.</a></li>
-               <li><a href="{{ url('business-details2') }}" class="active"> Business Logo & Social Info.</a> </li>
+               <li><a href="{{ url('business-contact-info') }}" > Business Contact Info.</a></li>
+               <li><a href="{{ url('business-logo-social-network') }}" class="active"> Business Logo & Social Info.</a> </li>
             </ul>
          </div>
       </div>
       <div class="rightpan">
          <div class="col-lg-12">
-            <form>
+            <form action="{{ url('api/update-logo-social') }}" method="post" id="update-contact-info">
                <div class="headRow">
                   <div class=" clearfix">
                      <div class="row">
@@ -54,27 +32,27 @@ Squeedr
                                  <img src="{{asset('public/assets/website/images/picture.png')}}"><br>
                                  <span>Upload Business Logo</span>
                               </div>
-                              <div class="upload-logo">
+                              <!-- <div class="upload-logo">
                                  <img src="{{asset('public/assets/website/images/picture.png')}}"><br>
                                  <span>Upload Other Photos</span>
-                              </div>
+                              </div> -->
                            </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                            <div class="form-details">
                               <label for="Phone">Facebook Link</label>
-                              <input class="form-control" type="text" />
+                              <input class="form-control" type="text" placeholder="Facebook Link" name="facebook_link" value="<?=$userDetails->facebook_link ? $userDetails->facebook_link : "";?>" />
                               <label for="Phone">Twitter Link</label>
-                              <input class="form-control" type="text" />
+                              <input class="form-control" type="text" placeholder="Twitter Link" name="twitter_link" value="<?=$userDetails->twitter_link ? $userDetails->twitter_link : "";?>" />
                               <label for="Phone">Linked IN Link</label>
-                              <input class="form-control" type="text" />
+                              <input class="form-control" type="text" placeholder="Linked IN Link" name="linked_in_link" value="<?=$userDetails->linked_in_link ? $userDetails->linked_in_link : "";?>" />
                               <label for="Phone">User Website Link</label>
-                              <input class="form-control" type="text" />
+                              <input class="form-control" type="text" placeholder="User Website Link" name="user_wesite_link" value="<?=$userDetails->user_wesite_link ? $userDetails->user_wesite_link : "";?>" />
                            </div>
                         </div>
                      </div>
                      <div class="clearfix"></div>
-                     <a class="btn btn-primary butt-next" style="margin: 30px auto 0; width: 150px; display: block">Update</a>
+                     <button type="submit" id="business-logo-social-info-update" class="btn btn-primary butt-next" style="margin: 30px auto 0; width: 150px; display: block">Update</button>
                   </div>
                </div>
             </form>
