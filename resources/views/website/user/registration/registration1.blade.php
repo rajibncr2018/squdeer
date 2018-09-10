@@ -143,8 +143,8 @@
       <script type="text/javascript">
       //================Password Check====================
       $.validator.addMethod("passwordCk", function (pwd, element) {
-        pwd = pwd.replace(/\s+/g, "");
-        return this.optional(element) || pwd.length > 8 && pwd.match(/^[ A-Za-z0-9_@./#&+-]*$/);
+        //pwd = pwd.replace(/\s+/g, "");
+        return this.optional(element) && pwd.length > 8 && pwd.match(/^[ A-Za-z0-9_@./#&+-]*$/);
       }, "Password must be 8 character, alphaneumeric & one special character.");
       //================Password Check====================
       </script>

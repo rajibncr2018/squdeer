@@ -44,7 +44,7 @@ class UsersController extends ApiController {
 			$user = $this->common_model->fetchData($table_name,$conditions,$selectFields);
 			if(empty($user))
 			{
-				$this->response_message="Email/username & password not match";
+				$this->response_message="Email/Username and password does not match.";
 			}
 			else
 			{
@@ -57,8 +57,8 @@ class UsersController extends ApiController {
 					if($user->is_email_verified == 0 || $user->is_email_verified == 1)
 					{
 						//If user is registered within 3days
-						if(($created_on + (72*3600)) >= time() )
-						{
+						/*if(($created_on + (72*3600)) >= time() )
+						{*/
 							// create the user request key for validating the farther request of the user
 							$this->logged_user_no = $user->id;
 							$user_request_key = $this->generate_request_key();
@@ -68,11 +68,11 @@ class UsersController extends ApiController {
 							//$user_details['is_basic_data_saved']=$user->is_basic_data_saved;
 							$response_data['user']=$user_details;
 							$this->response_status='1';
-						}
+						/*}
 						else
 						{
 							$this->response_message="email_need_to_verify_for_login";
-						}
+						}*/
 					}
 					else
 					{
