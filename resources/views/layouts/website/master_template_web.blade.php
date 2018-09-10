@@ -30,9 +30,13 @@
       @yield('custom_css')
    </head>
    <body>
+   <?php 
+   $basicdatas = App\Http\Controllers\BaseApiController::category_list();
+   ?>
       <div class="animationload" style="display: none;">
             <div class="osahanloading"></div>
       </div>
+
       <header class="showDekstop clearfix">
          <div class="container-custm">
             <div class="leftpan">
@@ -1010,6 +1014,7 @@
             </div>
          </div>
       </div>
+      <!-- Add Stff (New Team Member )-->
       <div class="modal fade" id="myModalnewteam" role="dialog">
          <div class="modal-dialog add-pop">
             <!-- Modal content-->
@@ -1025,6 +1030,15 @@
                         <div class="form-group">
                            <div class="input-group"> <span class="input-group-addon"><i class="fa fa-user"></i></span>
                               <input id="staff_fullname" type="text" class="form-control" name="staff_fullname" placeholder="Full Name">
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="form-group">
+                           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                              <input id="staff_username" type="text" class="form-control" name="staff_username" placeholder="Username">
                            </div>
                         </div>
                      </div>
@@ -1073,11 +1087,12 @@
                               <div class="form-group nomarging custom-select color-b" >
                                   <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="staff_category" id="staff_category" >
                                     <option value="">Select Category </option>
-                                    <?php /*
-                                    foreach ($category as $key => $value)
+                                    <?php
+                                    if(!empty($basicdatas['category_list']))
+                                    foreach ($basicdatas['category_list'] as $key => $value)
                                     {
                                         echo "<option value='".$value->category_id."'>".$value->category."</option>";
-                                    } */
+                                    }
                                     ?>
                                   </select>
                                  <div class="clearfix"></div>
@@ -1270,7 +1285,7 @@
       <script src="{{asset('public/assets/website/js/script.js')}}"></script>
       <script src="{{asset('public/assets/website/js/custom-selectbox.js')}}"></script>
       <script src="{{asset('public/assets/website/js/owl.carousel.js')}}"></script> 
-
+      <!-- Sweetalert -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
       <!-- jQuery Cookie -->
       <script src="{{asset('public/assets/website/js/jquery.cookie.min.js')}}"></script>
@@ -1515,28 +1530,37 @@
 
       <!-- Form Validation -->
       <script src="{{asset('public/assets/website/js/jquery.validate.min.js')}}"></script>
-      <!-- Add New Team Member -->
-        <script>
-          $('#add_team_member_form').validate({
-              rules: {
-                  staff_fullname: {
-                      required: true
-                  },
-                  staff_email: {
-                      required: true,
-                      email: true
-                  },
-                  staff_mobile: {
-                      required: true,
-                      number: true,
-                      minlength: 10,
-                      maxlength: 10
-                  }
-              },
-
-              messages: {
+      
+      <script>
+        // Add New Staff (New Member) //
+        $('#add_team_member_form').validate({
+            rules: {
+                staff_fullname: {
+                    required: true
+                },
+                staff_username: {
+                    required: true
+                },
+                staff_email: {
+                    required: true,
+                    email: true
+                },
+                staff_mobile: {
+                    required: true,
+                    number: true,
+                    minlength: 10,
+                    maxlength: 10
+                },
+                staff_description: {
+                    required: true
+                }
+            },
+            messages: {
                 staff_fullname: {
                     required: 'Please enter fullname'
+                },
+                staff_username: {
+                    required: 'Please enter username'
                 },
                 staff_email: {
                     required: 'Please enter email',
@@ -1547,47 +1571,61 @@
                     number: 'Please enter proper mobile no',
                     minlength: 'Please enter minimum 10 digit mobile no',
                     maxlength: 'Please enter maximum 10 digit mobile no'
+                },
+                staff_description: {
+                    required: 'Please enter description'
                 }
               },
+            submitHandler: function(form) {
+                var data = $(form).serializeArray();
+                data = addCommonParams(data);
+                
+                var files =$("#add_team_member_form input[type='file']")[0].files;
+                var form_data = new FormData();
+                if(files.length>0){
+                    for(var i=0;i<files.length;i++){
+                        form_data.append('staff_profile_picture',files[i]);
+                    }
+                }
+                // append all data in form data 
+                $.each(data, function( ia, l ){
+                    form_data.append(l.name, l.value);
+                });
 
-              submitHandler: function(form) {
-                  var data = $(form).serializeArray();
-                  data = addCommonParams(data);
-                  console.log(data);
-                  /*$.ajax({
-                      url: form.action,
-                      type: form.method,
-                      data: data,
-                      dataType: "json",
-                      success: function(response) {
-                          console.log(response);
-                          //Success//
-                          if(response.response_status == 1){
-                            $("#registerform")[0].reset();
-                            //swal('Success!',response.response_message,'success');
-                            var token = response.token;
-                            var redirect_url = baseUrl+'/corporate-profile-completion/'+token;
-                            window.location = redirect_url;
-                          } else {
-                              //alert(response.response_message);
-                              swal('Sorry!',response.response_message,'error');
-                              $('.preloader').hide();
-                          }
-                      },
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: form_data,
+                    dataType: "json",
+                    processData: false,  // tell jQuery not to process the data
+                    contentType: false,  // tell jQuery not to set contentType
+                    success: function(response) {
+                        console.log(response);
+                        //Success//
+                        if(response.response_status == 1){
+                            $(form)[0].reset();
+                            $('#myModalnewteam').modal('hide');
+                            
+                            swal('Success!',response.response_message,'success');
+                            location.reload();
+                            
+                        }else {
+                            swal('Sorry!',response.response_message,'error');
+                        }
+                    },
+                    beforeSend: function(){
+                        $('.animationload').show();
+                    },
+                    complete: function(){
+                        $('.animationload').hide();
+                    }
+                });
+            }
+        });
+      </script>
 
-                      beforeSend: function(){
-                          $('.preloader').show();
-                      },
-
-                      complete: function(){
-                          $('.preloader').hide();
-                      }
-                  });*/
-              }
-          });
-          
-        </script>
-        <script src="{{asset('public/assets/website/js/ncrts.js')}}"></script>
+      <script src="{{asset('public/assets/website/js/ncrts.js')}}"></script>
       @yield('custom_js')
+      
    </body>
 </html>

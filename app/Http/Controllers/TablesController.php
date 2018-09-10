@@ -15,6 +15,7 @@ class TablesController {
         $this->tableNameCountry = config('constants.tables.countries');
         $this->tableNameProfession = config('constants.tables.profession');
         $this->tableNameCurrency = config('constants.tables.currency');
+        $this->tableNameStaff = config('constants.tables.staff');
         //admin section
         $this->tableNameMasterAdmin = config('constants.tables.masterAdmin');
         $this->tableNameUser = config('constants.tables.user');
