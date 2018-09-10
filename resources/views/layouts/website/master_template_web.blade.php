@@ -1607,6 +1607,7 @@
                             $('#myModalnewteam').modal('hide');
                             
                             swal('Success!',response.response_message,'success');
+                            location.reload();
                             
                         }else {
                             swal('Sorry!',response.response_message,'error');

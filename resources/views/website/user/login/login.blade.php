@@ -25,7 +25,7 @@
     <div class="login-form">
       <form action="{{ url('api/login') }}" method="post" autocomplete="off" id="loginform">
         <div class="form-group"> <img src="{{asset('public/assets/website/images/login-icon-email.png')}}">
-          <input type="email" class="form-control" id="email" placeholder="Email/Username" name="email">
+          <input type="text" class="form-control" id="email" placeholder="Email/Username" name="email">
           <div class="clearfix"></div>
         </div>
         <div class="form-group"> <img src="{{asset('public/assets/website/images/login-icon-passwod.png')}}">
@@ -59,6 +59,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
 <script src="{{asset('public/assets/website/js/ncrts.js')}}"></script>
+<script src="{{asset('public/assets/website/js/ncrtsdev.js')}}"></script>
 <script type="text/javascript">
 //================Submit AJAX request ==================
 $('#loginform').validate({

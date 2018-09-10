@@ -150,6 +150,12 @@
       </script>
 
       <script type="text/javascript">
+		$.validator.addMethod("pwcheck", function(value) {
+			return /[A-Z]+/.test(value) // consists of only these
+				&& /[a-z]+/.test(value) // has a lowercase letter
+				&& /[0-9]+/.test(value) // has a digit
+				&& /[*@&%!#$]+/.test(value) // has a Special character
+		});
       //================Submit AJAX request ==================
       $('#registration-form-one').validate({
 
@@ -161,7 +167,9 @@
                 },
                 password: {
                     required: true,
-                    passwordCk: true
+					minlength: 8,
+					pwcheck: true
+                    //passwordCk: true
                 },
                 phone: {
                     required: true,
@@ -180,7 +188,9 @@
                     required: 'Please enter username'
                 },
                 password: {
-                    required: 'Please enter password'
+                    required: 'Please enter password',
+					minlength: 'Please enter minimum 8 character password',
+					pwcheck: 'Password must contain 1 upper case, 1 lower case, 1 digit and 1 special character.'
                 },
                 phone: {
                     required: 'Please enter mobile'

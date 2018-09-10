@@ -163,7 +163,7 @@ class StaffsController extends ApiController {
 		if(!empty($search_text)){
 			$findCond[]=array('full_name','like','%'.$search_text.'%');
 		}
-		$selectFields=array('staff_id','user_id','full_name','username','email','mobile','description','home_phone','work_phone','expertise','category_id','staff_profile_picture','is_internal_staff','booking_url','is_login_allowed','is_email_verified','is_blocked','create_at');
+		$selectFields=array('staff_id','user_id','full_name','username','email','mobile','description','home_phone','work_phone','expertise','category_id','staff_profile_picture','is_internal_staff','booking_url','is_login_allowed','is_email_verified','is_blocked','created_on');
 		$staff_list = $this->common_model->fetchDatas($this->tableObj->tableNameStaff,$findCond,$selectFields);
 		$response_data['staff_list']=$staff_list;
 		$this->response_status='1';

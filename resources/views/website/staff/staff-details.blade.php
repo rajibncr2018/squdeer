@@ -68,127 +68,131 @@ Squeedr
          <div class="relativePostion">
             <div class=" showDekstop clearfix">
                <div class="col-md-12">
-                  <div class="custm-linkedt">
-                     <ul>
-                        <li><a href="javascript:void(0);" data-toggle="modal" data-target="#myModalnewteam" title="Add Staff"><i class="fa fa-plus" aria-hidden="true"></i> </a></li>
-                        <li><a href="javascript:void(0);"  data-toggle="tooltip" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i> </a></li>
-                     </ul>
-                  </div>
-                  <div class="staff-detailuser">
-                     <img id="staffImgDisp" src="" class="img-circle" alt="" width="55" height="55">
-                     <h4><b id="staffNameDisp"></b> <a href="#" style="font-size: 14px; margin-left: 10px; font-weight: 300;"  data-toggle="tooltip" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i> </a></h4>
-                     <p id="staffEmailDisp"></p>
-                  </div>
-                  <!-- Nav tabs -->
-                  <div class="staff-detail">
-                     <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" id="detailsTab" href="#tab1">Details</a></li>
-                        <li><a data-toggle="tab" href="#tab2">Availability</a></li>
-                        <li><a data-toggle="tab" href="#tab3">Block Time</a></li>
-                        <li><a data-toggle="tab" href="#tab4">Postal Codes</a></li>
-                     </ul>
-                     <div class="tab-content">
-                        <div id="tab1" class="tab-pane fade in active">
-                           <div class="staff-detailtab-bx">
-                              <ul>
-                                 <li>
-                                    <div class="row">
-                                       <div class="col-sm-10">
-                                          <h4>Staff Description</h4>
-                                          <p id="staffDesc">No Description</p>
-                                       </div>
-                                    </div>
-                                 </li>
-                                 <li>
-                                    <div class="row">
-                                       <div class="col-sm-10">
-                                          <h4>Active</h4>
-                                          <p>Disable this to temporarily suspend this staff's account. The staff details will not be deleted from the
-                                             system
-                                          </p>
-                                       </div>
-                                       <div class="col-sm-2">
-                                          <button type="button" id="isBlocked" class="btn btn-sm btn-toggle pull-right" data-toggle="button" aria-pressed="true" autocomplete="off">
-                                             <div class="handle"></div>
-                                          </button>
-                                       </div>
-                                    </div>
-                                 </li>
-                                 <li>
-                                    <div class="row">
-                                       <div class="col-sm-10">
-                                          <h4>Internal Staff</h4>
-                                          <p>Internal staff cannot be viewed or booked by customers.</p>
-                                       </div>
-                                       <div class="col-sm-2">
-                                          <button id="isInternalStaff" type="button" class="btn btn-sm btn-secondary btn-toggle pull-right" data-toggle="button" aria-pressed="false" autocomplete="off">
-                                             <div class="handle"></div>
-                                          </button>
-                                       </div>
-                                    </div>
-                                 </li>
-                                 <li>
-                                    <div class="row">
-                                       <div class="col-sm-10">
-                                          <h4>Login Allowed</h4>
-                                          <p>Restrict Jason to login next time. Allow Jason to view/manage/block dates and times for their schedule
-                                             only. Staff can also search customers but cannot export the customer list
-                                          </p>
-                                       </div>
-                                       <div class="col-sm-2">
-                                          <button   id="isLoginAllowed" type="button" class="btn btn-sm btn-secondary btn-toggle pull-right" data-toggle="button" aria-pressed="false" autocomplete="off">
-                                             <div class="handle"></div>
-                                          </button>
-                                       </div>
-                                    </div>
-                                 </li>
-                                 <li>
-                                    <div class="row">
-                                       <div class="col-sm-10">
-                                          <h4>Booking URL</h4>
-                                          <p id="bookingUrl">https://booking.appointy.com/</p>
-                                       </div>
-                                       <div class="col-sm-2">
-                                          <button type="button" class="btn btn-default pull-right"> <i class="fa fa-files-o" aria-hidden="true"></i> COPY </button>
-                                       </div>
-                                    </div>
-                                 </li>
-                                 <li>
-                                    <div class="row">
-                                       <div class="col-sm-10">
-                                          <h4>Integrations</h4>
-                                          <p>No Integrations</p>
-                                       </div>
-                                    </div>
-                                 </li>
-                                 <li>
-                                    <div class="row">
-                                       <div class="col-sm-10">
-                                          <h4>Email Verification</h4>
-                                          <p id="staffEmail">lamie74@gmail.com <span class="label label-danger"><i>Not Verified</i></span></p>
-                                       </div>
-                                       <div class="col-sm-2">
-                                          <button type="button" class="btn btn-default pull-right"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> SEND EMAIL</button>
-                                       </div>
-                                    </div>
-                                 </li>
-                              </ul>
-                           </div>
+                    <div class="custm-linkedt">
+                        <ul>
+                            <li><a href="javascript:void(0);" data-toggle="modal" data-target="#myModalnewteam" title="Add Staff"><i class="fa fa-plus" aria-hidden="true"></i> </a></li>
+                            <li><a href="javascript:void(0);"  data-toggle="tooltip" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i> </a></li>
+                        </ul>
+                    </div>
+                    <?php 
+                    if(!empty($staff_list)){
+                    ?>
+                    <div class="staff-detailuser">
+                        <img id="staffImgDisp" src="" class="img-circle" alt="" width="55" height="55">
+                        <h4><b id="staffNameDisp"></b> <a href="#" style="font-size: 14px; margin-left: 10px; font-weight: 300;"  data-toggle="tooltip" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i> </a></h4>
+                        <p id="staffEmailDisp"></p>
+                    </div>
+                    <!-- Nav tabs -->
+                    <div class="staff-detail">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" id="detailsTab" href="#tab1">Details</a></li>
+                            <li><a data-toggle="tab" href="#tab2">Availability</a></li>
+                            <li><a data-toggle="tab" href="#tab3">Block Time</a></li>
+                            <li><a data-toggle="tab" href="#tab4">Postal Codes</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tab1" class="tab-pane fade in active">
+                            <div class="staff-detailtab-bx">
+                                <ul>
+                                    <li>
+                                        <div class="row">
+                                        <div class="col-sm-10">
+                                            <h4>Staff Description</h4>
+                                            <p id="staffDesc">No Description</p>
+                                        </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                        <div class="col-sm-10">
+                                            <h4>Active</h4>
+                                            <p>Disable this to temporarily suspend this staff's account. The staff details will not be deleted from the
+                                                system
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button type="button" id="isBlocked" class="btn btn-sm btn-toggle pull-right" data-toggle="button" aria-pressed="true" autocomplete="off">
+                                                <div class="handle"></div>
+                                            </button>
+                                        </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                        <div class="col-sm-10">
+                                            <h4>Internal Staff</h4>
+                                            <p>Internal staff cannot be viewed or booked by customers.</p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button id="isInternalStaff" type="button" class="btn btn-sm btn-secondary btn-toggle pull-right" data-toggle="button" aria-pressed="false" autocomplete="off">
+                                                <div class="handle"></div>
+                                            </button>
+                                        </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                        <div class="col-sm-10">
+                                            <h4>Login Allowed</h4>
+                                            <p>Restrict Jason to login next time. Allow Jason to view/manage/block dates and times for their schedule
+                                                only. Staff can also search customers but cannot export the customer list
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button   id="isLoginAllowed" type="button" class="btn btn-sm btn-secondary btn-toggle pull-right" data-toggle="button" aria-pressed="false" autocomplete="off">
+                                                <div class="handle"></div>
+                                            </button>
+                                        </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                        <div class="col-sm-10">
+                                            <h4>Booking URL</h4>
+                                            <p id="bookingUrl">https://booking.appointy.com/</p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button type="button" class="btn btn-default pull-right"> <i class="fa fa-files-o" aria-hidden="true"></i> COPY </button>
+                                        </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                        <div class="col-sm-10">
+                                            <h4>Integrations</h4>
+                                            <p>No Integrations</p>
+                                        </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                        <div class="col-sm-10">
+                                            <h4>Email Verification</h4>
+                                            <p id="staffEmail">lamie74@gmail.com <span class="label label-danger"><i>Not Verified</i></span></p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button type="button" class="btn btn-default pull-right"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> SEND EMAIL</button>
+                                        </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            </div>
+                            <div id="tab2" class="tab-pane fade">
+                            <!--<h3>Menu 2</h3>-->
+                            <p>No record found</p>
+                            </div>
+                            <div id="tab3" class="tab-pane fade">
+                            <!--<h3>Menu 3</h3>-->
+                            <p>No record found</p>
+                            </div>
+                            <div id="tab4" class="tab-pane fade">
+                            <!--<h3>Menu 4</h3>-->
+                            <p>No record found</p>
+                            </div>
                         </div>
-                        <div id="tab2" class="tab-pane fade">
-                           <!--<h3>Menu 2</h3>-->
-                           <p>No record found</p>
-                        </div>
-                        <div id="tab3" class="tab-pane fade">
-                           <!--<h3>Menu 3</h3>-->
-                           <p>No record found</p>
-                        </div>
-                        <div id="tab4" class="tab-pane fade">
-                           <!--<h3>Menu 4</h3>-->
-                           <p>No record found</p>
-                        </div>
-                     </div>
-                  </div>
+                    </div>
+                    <?php } ?>
                </div>
             </div>
          </div>
