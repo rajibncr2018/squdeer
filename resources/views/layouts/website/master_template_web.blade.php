@@ -22,6 +22,7 @@
       <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.css">
       <link href="{{asset('public/assets/website/css/ncrts.css')}}" rel="stylesheet">
       <link rel="stylesheet" href="{{asset('public/assets/website/css/owl.carousel.min.css')}}">
+      <link rel="stylesheet" href="{{asset('public/assets/website/css/autocompletestyles.css')}}">
       <script type="text/javascript">
         var authDatas={user_no:0};
         var device_token_key="<?php echo Session::getId()?>";
@@ -32,6 +33,20 @@
    <body>
    <?php 
    $basicdatas = App\Http\Controllers\BaseApiController::category_list();
+
+   function get_times( $default = '00:00', $interval = '+30 minutes' ) {
+        $output = '<option value=""></option>';
+        $current = strtotime( '00:00' );
+        $end = strtotime( '23:59' );
+        while( $current <= $end ) {
+            $time = date( 'H:i', $current );
+            $sel = ( $time == $default ) ? ' selected' : '';
+    
+            $output .= "<option value=\"{$time}\"{$sel}>" . date( 'h.i A', $current ) .'</option>';
+            $current = strtotime( $interval, $current );
+        }
+        return $output;
+    }
    ?>
       <div class="animationload" style="display: none;">
             <div class="osahanloading"></div>
@@ -50,7 +65,7 @@
                      <a href="#" class=" dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <img  src="{{asset('public/assets/website/images/slide-butt-add.png')}}"></a>
                      <div class="dropdown-menu pm-position" aria-labelledby="dropdownMenuButton"> 
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#myModaladdappoinment"> <i class="fa fa-calendar" aria-hidden="true"></i> Add Appointments</a> 
-                        <a class="dropdown-item" data-toggle="modal" data-target="#myModal"> <i class="fa fa-users" aria-hidden="true"></i>Add Clients</a> 
+                        <a class="dropdown-item" data-toggle="modal" data-target="#myModaladdclient"> <i class="fa fa-users" aria-hidden="true"></i>Add Clients</a> 
                         <a class="dropdown-item" data-toggle="modal" data-target="#myModalnewteam"> <i class="fa fa-cog" aria-hidden="true"></i> New Team Member</a> 
                         <a class="dropdown-item" href="#"> <i class="fa  fa-id-card " aria-hidden="true"></i>Services</a> 
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#myModalblockdate"> <i class="fa fa-user" aria-hidden="true"></i> Block Date</a> 
@@ -790,17 +805,18 @@
   </div>
 
       <!--====================================Modal Add ====================================-->
-      <!-- Modal -->
+      <!-- Add Appoitment -->
       <div class="modal fade" id="myModaladdappoinment" role="dialog">
          <div class="modal-dialog add-pop">
             <!-- Modal content-->
             <div class="modal-content new-modalcustm">
+            <form name="add_appointmentm_form" id="add_appointmentm_form" method="post" action="" enctype="multipart/form-data">
                <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
                   <h4 class="modal-title"> Add Appointments</h4>
                </div>
                <div class="modal-body clr-modalbdy">
-                  <div class="row">
+                  <!--<div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
                            <div class="input-group">
@@ -814,7 +830,18 @@
                            </div>
                         </div>
                      </div>
+                  </div>-->
+
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <div class="form-group">
+                           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-users"></i></span>
+                              <input id="client" type="text" class="form-control" name="client" placeholder="Client">
+                           </div>
+                        </div>
+                     </div>
                   </div>
+
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
@@ -823,6 +850,8 @@
                               <div class="form-group nomarging custom-select color-b" >
                                  <select >
                                     <option>Services</option>
+                                    <option>Resorce</option>
+                                    <option>Meetings</option>
                                  </select>
                                  <div class="clearfix"></div>
                               </div>
@@ -830,7 +859,7 @@
                         </div>
                      </div>
                   </div>
-                  <div class="row">
+                  <!--<div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
                            <div class="input-group">
@@ -844,24 +873,45 @@
                            </div>
                         </div>
                      </div>
+                  </div>-->
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <div class="form-group">
+                           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                              <input id="staff" type="text" class="form-control" name="staff" placeholder="Staff">
+                           </div>
+                        </div>
+                     </div>
                   </div>
                   <div class="row">
                      <div class="col-sm-12">
                         <div class="form-group">
                            <div class="input-group"> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                              <input id="date" type="text" class="form-control" name="date" placeholder="Date">
+                              <input id="appointmentdate" type="text" class="form-control" name="date" placeholder="Date">
                            </div>
                         </div>
                      </div>
                   </div>
                   <div class="row">
                      <div class='col-sm-12'>
-                        <div class="form-group">
+                        <!--<div class="form-group">
                            <div class="input-group"> <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-                              <input id="time" type="text" class="form-control" name="time" placeholder="Time">
+                              <input id="appointmenttime" type="text" class="form-control" name="time" placeholder="Time">
                            </div>
+                        </div>-->
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                <div class="form-group nomarging custom-select color-b" >
+                                    <select id="appointmenttime" onmousedown="if(this.options.length>8){this.size=8;}"  onchange='this.size=0;' onblur="this.size=0;">
+                                    <?php echo get_times(); ?>
+                                    </select>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
                         </div>
                      </div>
+                        
                   </div>
                   <div class="row">
                      <div class='col-sm-12'>
@@ -888,16 +938,19 @@
                </div>
                <div class="modal-footer">
                   <div class="col-md-12 text-center">
-                     <a class="btn btn-primary butt-next" style="margin: 0px auto 0; width: 150px; display: block">Submit</a>
+                     <button type="button" id="submit_appointmentm_form" class="btn btn-primary butt-next" style="margin: 0px auto 0; width: 150px; display: block">Submit</button>
                   </div>
                </div>
             </div>
          </div>
       </div>
-      <div class="modal fade" id="myModal" role="dialog">
+
+      <!-- Add Client -->
+      <div class="modal fade" id="myModaladdclient" role="dialog">
          <div class="modal-dialog add-pop">
             <!-- Modal content-->
             <div class="modal-content new-modalcustm">
+            <form name="add_client_form" id="add_client_form" method="post" action="{{url('api/add_client')}}" enctype="multipart/form-data">
                <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
                   <h4 class="modal-title">New Client Form</h4>
@@ -907,7 +960,7 @@
                      <div class="col-md-12">
                         <div class="form-group">
                            <div class="input-group"> <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                              <input id="name" type="text" class="form-control" name="name" placeholder="Full Name">
+                              <input id="client_name" type="text" class="form-control" name="client_name" placeholder="Full Name">
                            </div>
                         </div>
                      </div>
@@ -916,7 +969,7 @@
                      <div class="col-md-12">
                         <div class="form-group">
                            <div class="input-group"> <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                              <input id="email" type="text" class="form-control" name="email" placeholder="Email Address">
+                              <input id="client_email" type="text" class="form-control" name="client_email" placeholder="Email Address">
                            </div>
                         </div>
                      </div>
@@ -924,14 +977,30 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
-                           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                              <input id="mobile1" type="text" class="form-control" name="mobile" placeholder="Mobile" style="width: 92%;">               
+                           <div class="input-group" id="mobile_error"> <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                              <input id="client_mobile" type="text" class="form-control" name="client_mobile" placeholder="Mobile" style="width: 92%;">               
                            </div>
-                           <a style="position: absolute; right:15px; top:8px; font-size: 18px" role="button" data-toggle="collapse" 
-                              data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><i class="fa fa-plus"></i></a>
+                           <a style="position: absolute; right:15px; top:8px; font-size: 18px" role="button" data-toggle="collapse" data-target="#client_other_phone" id="client_more_phone"><i class="fa fa-plus"></i></a>
                         </div>
                      </div>
                   </div>
+                  <div class="row collapse" id="client_other_phone" >
+                     <div class="col-md-12">
+                        <div class="form-group" id="home_phone_error">
+                           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                              <input id="client_home_phone" type="text" class="form-control" name="client_home_phone" placeholder="Home Phone">
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-12">
+                        <div class="form-group">
+                           <div class="input-group" id="work_phone_error"> <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                              <input id="client_work_phone" type="text" class="form-control" name="client_work_phone" placeholder="Work Phone">
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
@@ -941,7 +1010,7 @@
                                  <option>Category Name</option>
                                  </select>-->
                               <div class="form-group nomarging custom-select color-b" >
-                                 <select >
+                                 <select>
                                     <option>Select Category </option>
                                     <option>Service </option>
                                     <option>Pack Passes </option>
@@ -1008,12 +1077,13 @@
                </div>
                <div class="modal-footer">
                   <div class="col-md-12 text-center">
-                     <a class="btn btn-primary butt-next" style="margin: 0px auto 0; width: 150px; display: block">Submit</a>
+                     <button type="submit" class="btn btn-primary butt-next" style="margin: 0px auto 0; width: 150px; display: block">Submit</button>
                   </div>
                </div>
             </div>
          </div>
       </div>
+
       <!-- Add Stff (New Team Member )-->
       <div class="modal fade" id="myModalnewteam" role="dialog">
          <div class="modal-dialog add-pop">
@@ -1028,7 +1098,7 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
-                           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                           <div class="input-group" id="fullname_error"> <span class="input-group-addon"><i class="fa fa-user"></i></span>
                               <input id="staff_fullname" type="text" class="form-control" name="staff_fullname" placeholder="Full Name">
                            </div>
                         </div>
@@ -1037,7 +1107,7 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
-                           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                           <div class="input-group" id="username_error"> <span class="input-group-addon"><i class="fa fa-user"></i></span>
                               <input id="staff_username" type="text" class="form-control" name="staff_username" placeholder="Username">
                            </div>
                         </div>
@@ -1046,7 +1116,7 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
-                           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                           <div class="input-group" id="email_error"> <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                               <input id="staff_email" type="text" class="form-control" name="staff_email" placeholder="Email Address">
                            </div>
                         </div>
@@ -1055,7 +1125,7 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
-                           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                           <div class="input-group" id="mobile_error"> <span class="input-group-addon"><i class="fa fa-phone"></i></span>
                               <input id="staff_mobile" type="text" class="form-control" name="staff_mobile" placeholder="Mobile" style="width: 92%;">               
                            </div>
                            <a style="position: absolute; right:15px; top:8px; font-size: 18px" role="button" data-toggle="collapse" data-target="#other_phone" id="more_phone"><i class="fa fa-plus"></i></a>
@@ -1064,7 +1134,7 @@
                   </div>
                   <div class="row collapse" id="other_phone" >
                      <div class="col-md-12">
-                        <div class="form-group">
+                        <div class="form-group" id="home_phone_error">
                            <div class="input-group"> <span class="input-group-addon"><i class="fa fa-phone"></i></span>
                               <input id="staff_home_phone" type="text" class="form-control" name="staff_home_phone" placeholder="Home Phone">
                            </div>
@@ -1072,7 +1142,7 @@
                      </div>
                      <div class="col-md-12">
                         <div class="form-group">
-                           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                           <div class="input-group" id="work_phone_error"> <span class="input-group-addon"><i class="fa fa-phone"></i></span>
                               <input id="staff_work_phone" type="text" class="form-control" name="staff_work_phone" placeholder="Work Phone">
                            </div>
                         </div>
@@ -1082,7 +1152,7 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
-                           <div class="input-group">
+                           <div class="input-group" id="category_error">
                               <span class="input-group-addon"><i class="fa fa-file-text"></i></span>
                               <div class="form-group nomarging custom-select color-b" >
                                   <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="staff_category" id="staff_category" >
@@ -1104,7 +1174,7 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
-                           <div class="input-group textarea-md"> <span class="input-group-addon"><i class="fa fa-flask"></i></span>
+                           <div class="input-group textarea-md" id="expertise_error"> <span class="input-group-addon"><i class="fa fa-flask"></i></span>
                               <textarea style="width: 100%" name="staff_expertise" id="staff_expertise" placeholder="Expertise (i.e. Insomnia, Sleep disorder, Hyperactivity,...)"></textarea>
                            </div>
                         </div>
@@ -1113,7 +1183,7 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
-                           <div class="input-group textarea-md"> <span class="input-group-addon"><i class="fa fa-file"></i></span>
+                           <div class="input-group textarea-md" id="description_error"> <span class="input-group-addon"><i class="fa fa-file"></i></span>
                               <textarea style="width: 100%" name="staff_description" id="staff_description" placeholder="Description"></textarea>
                            </div>
                         </div>
@@ -1149,6 +1219,7 @@
             </div>
          </div>
       </div>
+
       <div class="modal fade" id="myModalblockdate" role="dialog">
          <div class="modal-dialog add-pop">
             <!-- Modal content-->
@@ -1205,6 +1276,7 @@
             </div>
          </div>
       </div>
+
       <div class="modal fade" id="myModalblocktime" role="dialog">
          <div class="modal-dialog add-pop">
             <!-- Modal content-->
@@ -1284,7 +1356,8 @@
       <script src="{{asset('public/assets/website/js/parallax.min.js')}}"></script>
       <script src="{{asset('public/assets/website/js/script.js')}}"></script>
       <script src="{{asset('public/assets/website/js/custom-selectbox.js')}}"></script>
-      <script src="{{asset('public/assets/website/js/owl.carousel.js')}}"></script> 
+      <script src="{{asset('public/assets/website/js/owl.carousel.js')}}"></script>
+      <script src="{{asset('public/assets/website/js/jquery.autocomplete.min.js')}}"></script> 
       <!-- Sweetalert -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
       <!-- jQuery Cookie -->
@@ -1576,6 +1649,26 @@
                     required: 'Please enter description'
                 }
               },
+            
+            errorPlacement: function(error, element) {
+                if (element.attr("name") == "staff_fullname" ) {
+                    error.insertAfter($('#fullname_error'));
+                }
+                else if (element.attr("name") == "staff_username" ) {
+                    error.insertAfter($('#username_error'));
+                }
+                else if (element.attr("name") == "staff_email" ) {
+                    error.insertAfter($('#email_error'));
+                }
+                else if (element.attr("name") == "staff_mobile" ) {
+                    error.insertAfter($('#mobile_error'));
+                }
+                else if (element.attr("name") == "staff_description" ) {
+                    error.insertAfter($('#description_error'));
+                }
+                
+                
+            },
             submitHandler: function(form) {
                 var data = $(form).serializeArray();
                 data = addCommonParams(data);
@@ -1622,6 +1715,25 @@
                 });
             }
         });
+
+        var countries = [
+        { value: 'Pradipta Barik', data: '1' },
+        { value: 'Rajib Jana', data: '2' },
+        { value: 'Souvik Bose', data: '3' },
+        { value: 'Ayan Banerjee', data: '4' },
+        { value: 'Sudip Ghosh', data: '5' },
+        { value: 'Monaj Das', data: '6' },
+        { value: 'Mrinmoy Das', data: '7' }
+        ];
+
+        $('#client').autocomplete({
+            lookup: countries,
+        });
+
+        $('#staff').autocomplete({
+            lookup: countries,
+        });
+
       </script>
 
       <script src="{{asset('public/assets/website/js/ncrts.js')}}"></script>

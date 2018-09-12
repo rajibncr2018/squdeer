@@ -412,7 +412,12 @@ class BaseApiController extends BaseController
                     $mailTemplateName="emails/general";
                     $emailData['mailBody']=$mail_body;
                 break;
-                
+                case 5: // Staff Email Verification 
+                    $mail_subject = "User Account Details.";
+                    $mail_body="Here is the Login Credentails of your accont. Username : ".$emailData['username']." Password : ".$emailData['password'];
+                    $mailTemplateName="emails/general";
+                    $emailData['mailBody']=$mail_body;
+                break;
                 default:
 
                     $is_email_send=false;
@@ -430,7 +435,7 @@ class BaseApiController extends BaseController
                 {
                     Mail::raw($mail_body,function($mail) use($email,$mail_subject)
                     {
-                        $mail->from('info@squeedr.com','Squeedr email verification link');
+                        $mail->from('info@squeedr.com','Squeedr');
                         $mail->subject($mail_subject);
                         //$mail->bcc('mrinmoydas.ncrts@gmail.com');
                         if(is_array($email)){
