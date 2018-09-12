@@ -262,6 +262,41 @@ class UsersController extends ApiController {
 		//return view('website.staff.staff-details');
 	}
 
+	public function services()
+	{
+		// Check User Login. If not logged in redirect to login page //
+		$authdata = $this->website_login_checked();
+		if((empty($authdata['user_no']) || ($authdata['user_no']<=0)) || (empty($authdata['user_request_key']))){
+           return redirect('/login');
+		}
+
+		// Call API //
+		$post_data = $authdata;
+		$post_data['page_no']=1;
+		$data=array(
+			'service_list'=>array(),
+			'authdata'=>$authdata
+		);
+		$url_func_name="service_list";
+		$return = $this->curl_call($url_func_name,$post_data);
+		
+		// Check response status. If success return data //		
+		if(isset($return->response_status))
+		{
+			if($return->response_status == 1)
+			{
+				$data['service_list'] = $return->service_list;
+			}
+			//echo '<pre>'; print_r($data); exit;
+			return view('website.service.services')->with($data);
+		}
+		else{
+			return $return;
+		}
+
+		//return view('website.services');
+	}
+
 	public function booking_options()
 	{
 		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
@@ -353,15 +388,6 @@ class UsersController extends ApiController {
 		return view('website.invitees');
 	}
 
-	public function services()
-	{
-		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
-		{
-			return view('website.services');
-		}
-
-		return view('website.services');
-	}
 
 	public function payment_options()
 	{
@@ -412,6 +438,39 @@ class UsersController extends ApiController {
 
 		return view('website.invite-contacts');
 	}
+
+	public function add_location()
+	{
+		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
+		{
+			return view('website.add-location');
+		}
+
+		return view('website.add-location');
+	}
+
+	public function privacy_settings()
+	{
+		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
+		{
+			return view('website.privacy-settings');
+		}
+
+		return view('website.privacy-settings');
+
+	}
+
+	public function profile_settings()
+	{
+		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
+		{
+			return view('website.profile-settings');
+		}
+
+		return view('website.profile-settings');
+	}
+
+	
 
 
 	

@@ -20,24 +20,33 @@ Squeedr
             </ul>
          </div>
       </div>
+   
       <div class="rightpan">
          <div class="col-lg-12">
-            <form action="{{ url('api/update-logo-social') }}" method="post" id="update-contact-info">
+            <form action="{{ url('api/update-logo-social') }}" method="post" id="update-social-logo">
                <div class="headRow">
                   <div class=" clearfix">
                      <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-4">
                            <div class="form-details">
-                              <div class="upload-logo">
-                                 <img src="{{asset('public/assets/website/images/picture.png')}}"><br>
+                              <a href="" id="profile-image-remove" <?=$userDetails->profile_image ? '' : 'style="display: none;"'; ?>><i class="fa fa-close"></i></a>
+                              <div class="upload-logo" id="profile-image-upload">
+                                 <?php
+                                 $image = $userDetails->profile_image ? 'image/profile_image/'.$userDetails->profile_image : "assets/website/images/picture.png";
+                                 ?>
+                                 <img id="image_upload_preview" src="{{asset('public/'.$image)}}" height="60px" width="80px"><br>
                                  <span>Upload Business Logo</span>
                               </div>
+                              
+                              
                               <!-- <div class="upload-logo">
                                  <img src="{{asset('public/assets/website/images/picture.png')}}"><br>
                                  <span>Upload Other Photos</span>
                               </div> -->
                            </div>
                         </div>
+                        <input type="file" id="profile-image" name="profile_image" style="display: none;">
+                        <input type="hidden" name="old_profile_image" id="old_profile_image" value="<?=$userDetails->profile_image?>">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                            <div class="form-details">
                               <label for="Phone">Facebook Link</label>
@@ -79,4 +88,10 @@ Squeedr
       </div>
    </div>
 </div>
+
+<!-- <div style="display: none;">
+   <form action="" method="" enctype="multipart/form-data">
+      <input type="file" id="profile-image" name="profile_image">
+   </form>
+</div> -->
 @endsection

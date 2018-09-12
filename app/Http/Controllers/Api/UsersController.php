@@ -340,7 +340,8 @@ class UsersController extends ApiController {
 			$user_type = $request->input('user_type');
 			$username = $request->input('user_name');
 			$password = $request->input('password');
-			$mobile = $request->input('phone');
+			$country_code = $request->input('country_code');
+			$mobile = $country_code.$request->input('phone');
 			$profession = $request->input('profession');
 			$country = $request->input('country');  
 			$email = $_COOKIE['new_email'];
@@ -562,6 +563,8 @@ class UsersController extends ApiController {
 	public function update_contact_info(Request $request)
 	{
 		$response_data=array();
+		$this->validate_parameter(1);
+
 		$business_name = $request->input('business_name');
 		$business_location = $request->input('business_location');
 		$street_number = $request->input('street_number');
@@ -607,10 +610,24 @@ class UsersController extends ApiController {
 	public function update_logo_social(Request $request)
 	{
 		$response_data=array();
+		$this->validate_parameter(1);
+
 		$facebook_link = $request->input('facebook_link');
 		$twitter_link = $request->input('twitter_link');
 		$linked_in_link = $request->input('linked_in_link');
 		$user_wesite_link = $request->input('user_wesite_link');
+		if($request->file('profile_image'))
+        {
+			$image = $request->file('profile_image');
+			$name = time().'.'.$image->getClientOriginalExtension();
+			$destinationPath = public_path('/image/profile_image');
+			$image->move($destinationPath, $name);
+			$profile_image = $name;
+        }
+        else
+        {
+        	$profile_image = $request->input('old_profile_image');
+        }
 
 
 		$updateData = array(
@@ -618,6 +635,7 @@ class UsersController extends ApiController {
 				'twitter_link' => $twitter_link,
 				'linked_in_link' => $linked_in_link,
 				'user_wesite_link' => $user_wesite_link,
+				'profile_image' => $profile_image,
 		);
 
 		$user_no = $_COOKIE['sqd_user_no'];
@@ -634,5 +652,144 @@ class UsersController extends ApiController {
 
 		$this->json_output($response_data);
 	}
+
+	// User's service Listing //
+    public function service_list(Request $request)
+    {
+		$response_data=array();	
+		// validate the requested param for access this service api
+		$this->validate_parameter(1); // along with the user request key validation
+		$other_user_no = $request->input('other_user_no');
+		$pageNo = $request->input('page_no');
+		$pageNo = ($pageNo > 1) ? $pageNo : 1;
+		$limit=$this->limit;
+		$offset=($pageNo-1)*$limit;
+
+		if(!empty($other_user_no) && $other_user_no!=0){
+			$user_no = $other_user_no;
+		}
+		else
+		{
+			$user_no = $this->logged_user_no;
+		}
+        
+		$findCond = array(
+            array('user_id','=',$user_no),
+			array('is_deleted','=','0'),
+			//array('is_blocked','=','0'),
+		);
+		
+		$selectFields = array();
+		$category_select_field = array('category as cat');
+		$currency_field = array('currency');
+		$joins = array(
+                    array(
+                    'join_table'=>$this->tableObj->tableNameCategory,
+                    'join_table_alias'=>'servTb',
+                    'join_with'=>$this->tableObj->tableUserService,
+                    'join_type'=>'left',
+                    'join_on'=>array('category_id','=','category_id'),
+                    'join_on_more'=>array(),
+                    //'join_conditions' => array(array('transaction_no','=','invoice_no')),
+                    'select_fields' => $category_select_field,
+                ),
+                 array(
+                    'join_table'=>$this->tableObj->tableNameCurrency,
+                    //'join_with_alias'=>'userTb',
+                    'join_with'=>$this->tableObj->tableUserService,
+                    //'join_with_alias'=>'servTb',
+                    'join_type'=>'left',
+                    'join_on'=>array('currency_id','=','currency_id'),
+                    //'join_conditions' => array(array('user_no','=','teacher_user_no')),
+                    'select_fields' => $currency_field,
+                ),
+            );
+
+		//$service_list_full = $this->common_model->fetchDatas($this->tableObj->tableUserService, $findCond, $selectFields, $joins);
+
+		$service_category = $this->common_model->fetchDatas($this->tableObj->tableUserService, $findCond, $selectFields, $joins, $orderBy=array(),$groupBy='category_id');
+
+
+		$service = array();
+		for($i=0;$i<count($service_category);$i++)
+		{
+
+			$catCond = array(
+					array('category_id','=',$service_category[$i]->category_id),
+					array('user_id','=',$user_no),
+					array('is_deleted','=','0'),
+					//array('is_blocked','=','0'),
+			);
+			
+			$service_category_details = $this->common_model->fetchDatas($this->tableObj->tableUserService, $catCond, $selectFields, $joins, $orderBy=array(),$groupBy='');
+
+			$service[] = array(
+						'category_id' => $service_category[$i]->category_id,
+						'category' => $service_category[$i]->cat,
+						'details' => $service_category_details
+			);
+
+			//$service_category_details = '';
+		}
+		$response_data['service_list'] = $service;
+		$this->response_status = '1';
+		// generate the service / api response
+		$this->json_output($response_data);
+	}
+
+	// User's service Listing //
+    public function chnage_service_status(Request $request)
+    {
+		$response_data=array();	
+		// validate the requested param for access this service api
+		$this->validate_parameter(1); // along with the user request key validation
+		
+		$service_id = $request->input('service_id');
+
+		$findCond = array(
+            array('service_id','=',$service_id),
+		);
+		
+		$selectFields = array();
+
+		$service_details = $this->common_model->fetchData($this->tableObj->tableUserService, $findCond, $selectFields);
+
+		//now update service status 
+		$param = array(
+			'is_blocked' => $service_details->is_blocked== '0' ? '1' : '0',
+			'updated_on' => $this->date_format
+		);
+		
+		$this->common_model->update_data($this->tableObj->tableUserService,$findCond,$param);
+
+		$this->response_status='1';
+		$this->response_message="Successfully service status updated.";
+
+		$this->json_output($response_data);
+
+	}
+
+	public function country_phone_code(Request $request)
+	{
+		$response_data=array();
+
+		$country_no = $request->input('data');
+		$findCond = array(
+            array('country_no','=',$country_no),
+		);
+
+		
+		$selectFields = array();
+		$countryDetails = $this->common_model->fetchData($this->tableObj->tableNameCountry, $findCond, $selectFields);
+		$response_data['response_message'] = $countryDetails;
+		$this->response_status = '1';
+		// generate the service / api response
+		$this->json_output($response_data);
+
+	}
+
+	
+
+	
 
 }

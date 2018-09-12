@@ -28,11 +28,16 @@ Route::group(['prefix'=>'api'],function(){
     Route::post('/registration-step1','Api\UsersController@registration_step1');
     Route::post('/registration','Api\UsersController@registration');
     Route::any('/emailverification/{id}','Api\UsersController@emailverification');
+    Route::any('/country-phone-code','Api\UsersController@country_phone_code');
     Route::post('/registration-step2','Api\UsersController@registration_step2');
     Route::post('/login','Api\UsersController@login');
     Route::post('/logout','Api\UsersController@logout');
     Route::post('/update-contact-info','Api\UsersController@update_contact_info');
     Route::post('/update-logo-social','Api\UsersController@update_logo_social');
+
+    //Route::post('/add_staff','Api\UsersController@add_staff');
+    Route::post('/service_list','Api\UsersController@service_list');
+    Route::post('/chnage-service-status', 'Api\UsersController@chnage_service_status');
 
     Route::post('/add_staff','Api\StaffsController@add_staff');
     Route::post('/staff_list','Api\StaffsController@staff_list');
@@ -86,6 +91,19 @@ Route::group(['prefix'=>''],function(){
     Route::get('/create-invoice','Website\UsersController@create_invoice');
     Route::get('/invoice-details','Website\UsersController@invoice_details');
     Route::get('/invite-contacts','Website\UsersController@invite_contacts');
+    Route::get('/add-location','Website\UsersController@add_location');
+    Route::get('/privacy-settings','Website\UsersController@privacy_settings');
+    Route::get('/profile-settings','Website\UsersController@profile_settings');
+
+    //Route::get('/profile-settings','Website\UsersController@profile_settings');
+    //Route::get('/profile-settings','Website\UsersController@profile_settings');
+    //Route::get('/profile-settings','Website\UsersController@profile_settings');
+    //Route::get('/profile-settings','Website\UsersController@profile_settings');
+    //Route::get('/profile-settings','Website\UsersController@profile_settings');
+    //Route::get('/profile-settings','Website\UsersController@profile_settings');
+    //Route::get('/profile-settings','Website\UsersController@profile_settings');
+    //Route::get('/profile-settings','Website\UsersController@profile_settings');
+
 
 });
 

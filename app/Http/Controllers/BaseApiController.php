@@ -387,7 +387,8 @@ class BaseApiController extends BaseController
             $is_email_send=true;
             switch($mailType){
                 case 1:// email verification link 
-                    $mail_subject = trans('message.mail.subject_email_verify');
+                    //$mail_subject = trans('message.mail.subject_email_verify');
+                    $mail_subject = "Emmail verification link";
                     $mail_body="Your verification link is : ".$emailData['verify_link'];
                     $verify_link=$emailData['verify_link'];
                     $mailTemplateName="emails/general";
