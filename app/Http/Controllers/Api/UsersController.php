@@ -44,7 +44,7 @@ class UsersController extends ApiController {
 			$user = $this->common_model->fetchData($table_name,$conditions,$selectFields);
 			if(empty($user))
 			{
-				$this->response_message="Email/username & password not match";
+				$this->response_message="Email/Username and password does not match.";
 			}
 			else
 			{

@@ -29,9 +29,9 @@
             <?php
             } 
             ?> 
-        <form action="" method="post" autocomplete="off">
+        <form action="" method="post" autocomplete="off" id="registration">
           <div class="form-group"> <img src="{{asset('public/assets/website/images/login-icon-email.png')}}">
-            <input type="email" class="form-control" id="email" placeholder="Email" name="email" required="">
+            <input type="text" class="form-control" id="email" placeholder="Email" name="email">
             <div class="clearfix"></div>
           </div>
           <button type="submit" class="btn btn-default">Register</button>
@@ -50,5 +50,41 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
 <script src="{{asset('public/assets/website/js/parallax.min.js')}}"></script> 
 <script src="{{asset('public/assets/website/js/script.js')}}"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
+<script type="text/javascript">
+
+$.validator.addMethod("properemail", function(value, element) {
+       return this.optional(element) || /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test( value );
+   });
+
+//================Submit AJAX request ==================
+$('#registration').validate({
+      rules: {
+          email: {
+              required: true,
+              properemail: true
+          }
+      },
+
+      messages: {
+          email: {
+              required: 'Please enter email.',
+              properemail: 'Must be a valid email address.'
+          }
+      }
+  });
+//================Submit AJAX request===================
+</script>
+<style type="text/css">
+.login-form input[type=text]{
+      background: none;
+      border: 0;
+      width: 330px;
+      color: #FFF;
+      padding: 23px 10px;
+      font-size: 16px;
+}
+</style>
 </body>
 </html>

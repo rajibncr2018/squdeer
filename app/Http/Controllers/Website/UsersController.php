@@ -71,7 +71,7 @@ class UsersController extends ApiController {
         	$checkEmail = $this->common_model->fetchData('user',$condition);
         	if(!empty($checkEmail))
         	{
-        		\Session::flash('error_message', "Email already exist."); 
+        		\Session::flash('error_message', "Email already exists."); 
                 return redirect('/');
         	}
         	else
