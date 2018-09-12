@@ -57,6 +57,11 @@ class StaffsController extends ApiController {
             $description = $request->input('staff_description');
 
             $staff_profile_picture = '';
+            $staff_send_email = $request->input('staff_send_email');
+            $send_email = false;
+            if(isset($staff_send_email) && $staff_send_email == 1){
+                $send_email = true;
+            }
 
             $conditions = array(
 				'or'=>array('email'=>$email,'username'=>$username)
@@ -107,23 +112,18 @@ class StaffsController extends ApiController {
                 $staff_data['password'] = md5($password);
                 $staff_data['email_verification_code'] = $token;
 
-                /*$data=array(
-                    'user_id' => $user_id,
-                    'username' => $username,
-                    'full_name' => $full_name,
-                    'email' => $email,
-                    'mobile' => $mobile,
-                    'home_phone' => $home_phone,
-                    'work_phone' => $work_phone,
-                    'expertise' => $expertise,
-                    'description' => $description,
-                    'category_id' => $category_id,
-                    'password' => md5($password),
-                    'email_verification_code' => $token
-                );*/
 
                 $insertdata = $this->common_model->insert_data_get_id($this->tableObj->tableNameStaff,$staff_data);
                 if($insertdata > 0){
+                    /* Send Email */
+                    //$other_params = "?device_type=0&device_token_key=".Session::getId();
+					//$verify_link = $this->base_url('api/emailverification/'.$token.$other_params);// need to change with website url
+                    $emailData['username']=$username;
+                    $emailData['password']=$password;
+					$emailData['toName']=$full_name;
+
+                    $this->sendmail(5,$email,$emailData);
+                    
                     $this->response_status='1';
                     $this->response_message = "Staff successfully added.";
                 } else {

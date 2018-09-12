@@ -47,90 +47,7 @@ Squeedr
 
 
         <div id='datepicker'></div>
-        <div class="modal fade in" id="myModalAppointment" role="dialog">
-            <div class="modal-dialog add-pop">
-                <!-- Modal content-->
-                <div class="modal-content new-modalcustm">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">×</button>
-                        <h4 class="modal-title">New Appointment</h4>
-                    </div>
-                    <div class="modal-body clr-modalbdy">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-file-text"></i></span>
-                                    <div class="form-group nomarging custom-select color-b">
-                                        <select>
-                                            <option>Select Service </option>
-                                            <option>Service </option>
-                                            <option>Pack Passes </option>
-                                            <option>Resource </option>
-                                            <option>Meetings </option>
-                                            <option>New Category </option>
-                                            <option>Category </option>
-                                        </select>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                            <div class="form-group">
-                                <div class="input-group"> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input id="date" type="text" class="form-control" name="date" placeholder="Date">
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="input-group"> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input id="startdate" type="text" class="form-control" name="starttime" id="starttime" placeholder="Start Time">
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="input-group"> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input id="enddate" type="text" class="form-control" name="endtime" id="endtime" placeholder="End Time">
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                <div class="form-group nomarging custom-select color-b">
-                                    <select>
-                                        <option>Select Customer </option>
-                                        <option>Pradipta Barik </option>
-                                        <option>Rajib Jana </option>
-                                        <option>Soumyajit Roy </option>
-                                        
-                                    </select>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="col-md-12 text-center">
-                            <button class="btn btn-primary butt-next" id="save-event" style="margin: 0px auto 0; width: 150px; display: block" value="">Submit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
         <div class="modal fade in" id="myModalContent" role="dialog">
             <div class="modal-dialog add-pop">
@@ -234,11 +151,16 @@ Squeedr
             select: function(date, start, end, jsEvent, view) {
                 // Display the modal.
                 // You could fill in the start and end fields based on the parameters
+                if(start.isBefore(moment())) {
+                    $('#calendar').fullCalendar('unselect');
+                    return false;
+                }
+    
                 var strtdt = moment(start).format();
                 var enddt = moment(end).format();
-                $('#starttime').val(strtdt);
-                $('#date').val(date.format());
-                $('#myModalAppointment').modal('show');
+                $('#appointmenttime').val(moment(start).format('LT'));
+                $('#appointmentdate').val(moment(date).format('l'));
+                $('#myModaladdappoinment').modal('show');
                 //$('.modal').modal('show');
 
             },
