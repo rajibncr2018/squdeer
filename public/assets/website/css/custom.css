@@ -327,7 +327,7 @@ div.dataTables_wrapper div.dataTables_filter{display: none !important;}
 
 .upper-cmnsection{width:100%;float:left;border-bottom:1px solid #d0d0d0;padding:50px 0 0;background:#fff;}
 
-.heading-uprlft{width:295px;float:left;padding:3px 0px 0px 12px;color:#242424;font-size:22px;font-weight: 300;}
+.heading-uprlft{width:295px;float:left;padding:3px 0px 10px 12px;color:#242424;font-size:22px;font-weight: 300;}
 
 .upr-rgtsec{width: calc(100% - 295px);float:left;padding: 0;}
 
@@ -356,9 +356,9 @@ div.dataTables_wrapper div.dataTables_filter{display: none !important;}
 
 .new-modalcustm .input-group span i{font-size: 16px;width: 14px;color:#2ba2da;}
 .new-modalcustm .input-group span{background:#fff;}
-.new-modalcustm .form-control{height:42px;border-left:0}
+.new-modalcustm .form-control{height:42px;border-left:0;}
 .new-modalcustm textarea{border: 1px solid #ccc;
-padding: 10px 15px;border-left:0;}
+padding: 10px 15px;}
 
 #custom-search-input {margin:0;padding: 0;}
 #custom-search-input .search-query {padding-right:5px;padding-right: 4px \9;padding-left:10px;padding-left: 4px \9;border:0;border-bottom:2px solid #2ba2da;padding-top:8px;padding-bottom:8px; height:51px;

@@ -346,6 +346,22 @@ class UsersController extends ApiController {
 			$country = $request->input('country');  
 			$email = $_COOKIE['new_email'];
 
+			//check profession 
+			$profession_condition = array(
+							array('profession', '=', $profession), 
+							array('is_blocked', '=', '0'),
+						);
+			$check_profession = $this->common_model->fetchData($this->tableObj->tableNameProfession, $profession_condition);
+			if(!empty($check_profession))
+			{
+				$profession = $check_profession->profession_id;
+			}
+			else
+			{
+				$profession_param = array('profession' => $profession, 'is_blocked' => '1');
+				$profession_id = $this->common_model->insert_data_get_id($this->tableObj->tableNameProfession, $profession_param);
+				$profession = $profession_id;
+			}
 
 			$param = array(
 					'user_type' => $user_type,
@@ -576,7 +592,24 @@ class UsersController extends ApiController {
 		$skype_id = $request->input('skype_id');
 		$zip_code = $request->input('zip_code');
 		$business_description = $request->input('business_description');
+		$profession = $request->input('profession');
 
+		//check profession 
+		$profession_condition = array(
+						array('profession', '=', $profession), 
+						array('is_blocked', '=', '0'),
+					);
+		$check_profession = $this->common_model->fetchData($this->tableObj->tableNameProfession, $profession_condition);
+		if(!empty($check_profession))
+		{
+			$profession = $check_profession->profession_id;
+		}
+		else
+		{
+			$profession_param = array('profession' => $profession, 'is_blocked' => '1');
+			$profession_id = $this->common_model->insert_data_get_id($this->tableObj->tableNameProfession, $profession_param);
+			$profession = $profession_id;
+		}
 
 		$updateData = array(
 				'business_name' => $business_name,
@@ -586,6 +619,7 @@ class UsersController extends ApiController {
 				'city' => $city,
 				'state' => $state,
 				'mobile' => $mobile,
+				'profession' => $profession,
 				'office_phone' => $office_phone,
 				'skype_id' => $skype_id,
 				'zip_code' => $zip_code,

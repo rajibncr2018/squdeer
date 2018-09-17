@@ -419,6 +419,13 @@ class BaseApiController extends BaseController
                     $mailTemplateName="emails/general";
                     $emailData['mailBody']=$mail_body;
                 break;
+                case 5: // Staff Email Verification 
+                    $mail_subject = "Client Successfully Added.";
+                    //$mail_body="Here is the Login Credentails of your accont. Username : ".$emailData['username']." Password : ".$emailData['password'];
+                    $mail_body = "Dear <br> ".$emailData['toName'].", Your are successfully added as a client on Squeedr.";
+                    $mailTemplateName="emails/general";
+                    $emailData['mailBody']=$mail_body;
+                break;
                 default:
 
                     $is_email_send=false;
@@ -566,6 +573,39 @@ class BaseApiController extends BaseController
                 setcookie($cookie_name,'',time()-3600,'/');
             }
         }
+    }
+
+    /** timezone*/
+
+    /*public function time_zone()
+    {
+        $zones_array = array();
+        $timestamp = time();
+        foreach(timezone_identifiers_list() as $key => $zone)
+        {
+            date_default_timezone_set($zone);
+            $zones_array[$key]['zone'] = $zone;
+            $zones_array[$key]['diff_from_GMT'] = 'UTC/GMT ' . date('P', $timestamp);
+        }
+        return $zones_array;
+    }*/
+
+    public static function time_zone()
+    {
+        $data = array();
+        $obj = new Request();
+        $ci = new BaseApiController($obj);
+        $zones_array = array();
+        $timestamp = time();
+        foreach(timezone_identifiers_list() as $key => $zone)
+        {
+            date_default_timezone_set($zone);
+            $zones_array[$key]['zone'] = $zone;
+            $zones_array[$key]['diff_from_GMT'] = 'UTC/GMT ' . date('P', $timestamp);
+        }
+        $data = $zones_array;
+        //echo '<pre>'; print_r($data); exit;
+        return $data;
     }
 
 }

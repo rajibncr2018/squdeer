@@ -42,6 +42,8 @@ Route::group(['prefix'=>'api'],function(){
     Route::post('/add_staff','Api\StaffsController@add_staff');
     Route::post('/staff_list','Api\StaffsController@staff_list');
 
+    Route::post('/add_client','Api\ClientsController@add_client');
+
 });
 
 
@@ -94,6 +96,10 @@ Route::group(['prefix'=>''],function(){
     Route::get('/add-location','Website\UsersController@add_location');
     Route::get('/privacy-settings','Website\UsersController@privacy_settings');
     Route::get('/profile-settings','Website\UsersController@profile_settings');
+    Route::get('/profile-picture','Website\UsersController@profile_picture');
+    Route::get('/profile-link','Website\UsersController@profile_link');
+    Route::get('/profile-payment','Website\UsersController@profile_payment');
+    Route::get('/profile-login','Website\UsersController@profile_login');
 
     //Route::get('/profile-settings','Website\UsersController@profile_settings');
     //Route::get('/profile-settings','Website\UsersController@profile_settings');

@@ -87,15 +87,8 @@
                      </div>
                      <div class="form-group">
                         <img src="{{asset('public/assets/website/images/reg-icon-profesion1.png')}}">
-                        <select class="selectpicker required" data-show-subtext="true" data-live-search="true" name="profession" id="profession">
-                           <option value="">Select Profession</option>
-                           <?php
-                           foreach ($professions as $key => $value)
-                           {
-                              echo "<option value='".$value->profession_id."'>".$value->profession."</option>";
-                           }
-                           ?>
-                        </select>
+                        <input type="text" class="form-control" name="profession" id="profession" placeholder="Profession">
+                        
                         <div class="clearfix"></div>
                      </div>
                      
@@ -112,17 +105,20 @@
       <!-- <script src="js/bootstrap.min.js"></script> -->
 
       <script src="{{asset('public/assets/website/js/jquery.min.js')}}"></script> 
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+      <script src="{{asset('public/assets/website/js/bootstrap.min.js')}}"></script> 
       <script src="{{asset('public/assets/website/js/parallax.min.js')}}"></script> 
       <script src="{{asset('public/assets/website/js/script.js')}}"></script>
       <script src="{{asset('public/assets/website/js/custom-selectbox.js')}}"></script>
       <script src="{{asset('public/assets/website/js/ncrts.js')}}"></script>
        <!--=================select box=========================-->
       <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
-      <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+      <script src="{{asset('public/assets/website/js/jquery.validate.min.js')}}"></script>
       <!--==================Sweetalert=========================-->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
        <!--=================select box=========================-->
+       <!--===========================autocomplete========================-->
+       <script src="{{asset('public/assets/website/js/jquery.autocomplete.min.js')}}"></script>
+       <!--============================autocomplete========================-->
       </script>
       <script type="text/javascript">
          //================Tab select ==================
@@ -304,6 +300,22 @@
             });
             
         });
+      </script>
+      <script type="text/javascript">
+         var countries = [
+            <?php
+            foreach ($professions as $key => $value)
+            {
+            ?>
+                { value: '<?=$value->profession;?>', data: '<?=$value->profession_id;?>' },
+            <?php
+            }
+            ?>
+            ];
+
+            $('#profession').autocomplete({
+                lookup: countries,
+            });
       </script>
 
    </body>

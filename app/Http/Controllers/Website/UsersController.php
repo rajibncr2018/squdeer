@@ -130,9 +130,8 @@ class UsersController extends ApiController {
 		// Check User Login. If logged in redirect to dashboard //
 		$authdata = $this->website_login_checked();
 		if((!empty($authdata['user_no']) || $authdata['user_no'] > 0 ) && !empty($authdata['user_request_key'])){
-			$userData = $this->master_data_list($table=$this->tableObj->tableNameUser);	
 			$country = $this->master_data_list($table=$this->tableObj->tableNameCountry);
-			$data['professions'] = $this->master_data_list($table=$this->tableObj->tableNameProfession);
+			$professions = $this->master_data_list($table=$this->tableObj->tableNameProfession);
 
 
 			$user_id = $_COOKIE['sqd_user_no'];
@@ -142,10 +141,19 @@ class UsersController extends ApiController {
 	                    );
 
 			$userDetails = $this->common_model->fetchData($this->tableObj->tableNameUser,$condition);
+			
 
-			/*$country_name = array_search($country_name,$country);
-			print_r($country_name); die();*/
+			$prof_conditions = array(
+                array('profession_id', '=', $userDetails->profession),
+            );
+            $prof_data = $this->common_model->fetchData($this->tableObj->tableNameProfession, $prof_conditions);
+
+
+			$country_key = array_search($userDetails->country, array_column($country, 'country_no'));
+			$data['country_name'] = $country[$country_key]->country_name;
+			$data['profession_name'] = $prof_data->profession;
 			$data['country'] = $country;
+			$data['professions'] = $professions;
 			$data['userDetails'] = $userDetails;
 			//$this->remove_all_cookies(); // for manualy cookie remove testing
 			return view('website.business-contact-info', $data);
@@ -223,12 +231,12 @@ class UsersController extends ApiController {
 
 	public function client_database()
 	{
-		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
-		{
-			return view('website.client-database');
+		$authdata = $this->website_login_checked();
+		if((empty($authdata['user_no']) || ($authdata['user_no']<=0)) || (empty($authdata['user_request_key']))){
+           return redirect('/login');
 		}
 
-		return view('website.client-database');
+		return view('website.client.client-database');
 	}
 
 	public function staff_details()
@@ -468,6 +476,46 @@ class UsersController extends ApiController {
 		}
 
 		return view('website.profile-settings');
+	}
+
+	public function profile_picture()
+	{
+		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
+		{
+			return view('website.profile-picture');
+		}
+
+		return view('website.profile-picture');
+	}
+
+	public function profile_link()
+	{
+		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
+		{
+			return view('website.profile-link');
+		}
+
+		return view('website.profile-link');
+	}
+
+	public function profile_payment()
+	{
+		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
+		{
+			return view('website.profile-payment');
+		}
+
+		return view('website.profile-payment');
+	}
+
+	public function profile_login()
+	{
+		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
+		{
+			return view('website.profile-login');
+		}
+
+		return view('website.profile-login');
 	}
 
 	

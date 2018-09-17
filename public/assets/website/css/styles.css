@@ -498,6 +498,48 @@ position: fixed;
 .left-menu-collapse img { margin-top: -25px;}
 
 
+.notify-drops { width: 100px; position: absolute; top:-5px; right:-10px;}
+  .rounded { height:60px; width: 60px; margin-bottom: 0; border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; -ms-border-radius: 50%; -o-border-radius: 50%; }
+
+  .conn-drop { position: absolute; right:30px; top:13px;}
+  .ch-p { left: -50px;min-width: 250px;}
+  .ch-p li a strong {position: absolute; right:15px ;}
+
+  .user-bkd { display:flex; position: relative; }
+  .user-bkd h2 { font-size: 20px; font-weight: 400;margin:10px 0 0 15px; }
+  .user-bkd h2 span{ font-size: 14px; font-weight: 300;}
+  
+  .usr-bkd-dt {display:flex; position: relative; margin-top: 15px;}
+  .usr-bkd-dt .name { width:160px; line-height:25px;}
+  .usr-bkd-dt .name i {margin-right:5px;}
+  .usr-bkd-dt .datetime { padding-left: 15px; border-left:1px solid #ccc; }
+
+  .st-p { left: -75px; z-index: 99999;}
+  
+  
+  .notify { position: relative;}
+  .link-e a { float: left;  margin:0 10px 0 0px; }
+
+  .flip, .flip1 { position: absolute; right: 15px; top:40px; z-index: 9999; }
+  .flip textarea, .flip1 textarea { width: 100%;}
+
+  .show-arrow { font-size: 26px; position: absolute; right: 15px; top:30px; z-index: 9999; }
+
+  .notify-sep { margin:15px 0 15px 0;}
+  .panel, .panel1 {
+    margin-top: 10px;
+    display: none;
+}
+
+.custm-linkedt1 {
+    width: 130px;
+    margin: 0 0 9px;
+    position: absolute;
+    right: 0;
+    top: -10px;
+}
+
+
 
 /* ---------- Login ------------- */
 
@@ -540,7 +582,7 @@ position: fixed;
 
 
 
-.login-form .form-group { border-bottom: 1px solid #d7dadf; }
+.login-form .form-group { border-bottom: 1px solid #d7dadf; position: relative; }
 
 .login-form .form-group img { float: left; margin: 15px 0 0 5px;}
 
@@ -982,7 +1024,18 @@ Added by Debalina
 	bottom: -27px;
 	left: 4px;
 }
+.login-form .form-group label {position: absolute;
+    position: absolute;
+	font-size: 13px;
+	color: red;
+	bottom: -27px;
+	left: 4px;
+}
+.error {font-size: 13px !important; color: red !important; display:block; margin: 0 !important;}
 
+
+.from-reg1 .capacity { margin: 15px 0 10px 0; }
+.from-reg1 .capacity .form-group { margin-bottom: 0;}
 
 .from-reg1 button { width: 100%; padding: 13px 0; color: #2e374e; background: #FFF; border: 0; border-radius: 6px; -webkit-border-radius: 6px; -moz-border-radius: 6px; -ms-border-radius: 6px; -o-border-radius: 6px; 
 
@@ -1240,7 +1293,7 @@ Added by Debalina
 
 .booking-form1 .form-group img { float: left; margin: 15px 0 0 5px;}
 
-.booking-form1 input[type=email], .login-form input[type=password], .booking-form1 input[type=text] { background:none; border:0;  width:330px; color: #232323; 
+.booking-form1 input[type=email], .login-form input[type=password], .booking-form1 input[type=text] { background:none; border:0;  width:330px; color: #fff; 
 
 	padding: 23px 10px; font-size: 14px; }
 
@@ -1692,7 +1745,7 @@ Added by Debalina
 .stf-list a{ display:flex;   padding:15px 15px 10px; border: 1px solid #fff; margin:0 0 10px; box-shadow: 0px 0px 5px 0px #e6e4e4;}
 .stf-list a:hover{ border: 1px solid #ccc;}
 .stf-list a.active{ border: 1px solid #ccc;}
-.stf-list a img { height: 35px; vertical-align: middle}
+.stf-list a img { height: 35px; vertical-align: middle; border-radius: 50%}
 .stf-list h3 { padding-bottom: 0px;}
 .stf-list h3 { padding-bottom: 0px;}
 
@@ -1901,8 +1954,194 @@ Added by Debalina
 	top: 0;
 	width: 100%;
   }
+
+
+
+  .profile-nt h2 { font-size: 16px;margin-bottom: 10px;}
+
+.profile-nt .prof-st-bs { width: 100%; height: 10px; background:#ccc;}
+.profile-nt .prof-st { width: 70%; height: 10px; background-image: linear-gradient(to right, #2ba2da , #03be51);}
+
+.prof-box { width: 100%; height: 225px; border:1px solid #ccc; padding:15px; text-align: center; margin: 20px 0 0 0; border-radius:10px ; -webkit-border-radius:10px ; -moz-border-radius:10px ; -ms-border-radius:10px ; -o-border-radius:10px ;
+}
+.prof-box i { font-size: 50px; color:#2ba2da; margin-bottom: 15px}
+.prof-box h2 { font-size: 16px; font-weight: 400; margin: 5px 0;}
+.prof-box p { font-size: 13px; font-weight: 300;}
+.prof-box a {
+	font-size: 14px;
+	font-weight: 400;
+	background: #2ba2da;
+	color: #fff;
+	padding: 10px 18px;
+	margin: 20px auto;
+	display: block;
+	width: 120px;
+	border-radius:5px ;
+	-webkit-border-radius:5px ;
+	-moz-border-radius:5px ;
+	-ms-border-radius:5px ;
+	-o-border-radius:5px ;
+}
+
+.app-update { text-align: center; font-size: 18px; font-weight: 400; margin-bottom: 15px;}
+.app-update img { height: 30px; vertical-align: middle}
+
+.feedb-list { box-shadow: 0px 0px 5px 0px #e6e4e4; padding: 15px; margin-bottom: 20px;}
+.feedb-list img { float: left; width: 50px; height: 50px; border-radius:50% ; -webkit-border-radius:50% ; -moz-border-radius:50% ; -ms-border-radius:50% ; -o-border-radius:50% ; 
+}
+
+.feedb-list p { width: 70%; height: 54px; padding-left: 15px; display: table-cell; 
+	vertical-align: middle;}
+.feedb-list .tt { float: right;}
+
+.cal-c {box-shadow: 0px 0px 5px 0px #e6e4e4; padding: 25px; margin-bottom: 20px; position: relative; width:100%;}
+.cal-c img { max-height:80px;max-width:80px; float: left; margin-right: 40px}
+
+.cal-c div.cont {width:70%; display: block; float:left;border: 0px solid #f00;}
+.cal-c .cont h3 { font-size:24px; margin:10px 0 0px; padding-bottom: 6px; font-weight: 300; }
+.cal-c a { position: absolute; right: 20px; top:45px; background: #2ba2da; display:block; color: #FFF; padding: 10px 20px; 
+	font-weight: 400; text-transform: uppercase; border-radius: 5px; ; -webkit-border-radius: 5px ; -moz-border-radius: 5px ; -ms-border-radius: 5px ; -o-border-radius: 5px ;
+}
+
+.nav-tabs1 {background: #ededed; }
+.nav-tabs1 li { float: left;}
+.nav-tabs1 li a { color: #666; font-size: 15px;}
+.nav-tabs1 li a:hover { background:#2ba2da;  color: #FFF;}
+.nav-tabs1 li.active a { background:#2ba2da;  color: #FFF;}
+
+.noti { padding: 20px; height: calc(100vh - 170px); overflow-y: auto;}
   
 
+
+.app { margin: 20px 0 0 0;}
+.app tbody tr td:nth-child(4){ padding-right:8px !important ;}
+
+.journey { width: 250px; margin: 0 auto; text-align: center;}
+.journey span { background: #e3e3e3; padding: 10px 15px; text-transform: uppercase; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; 
+
+}
+.journey p { margin: 20px 0;}
+.journey .v-line {border-left: 2px solid #e3e3e3; height: 50px; width: 2px; margin: 0 auto;}
+
+.ps-code #custom-search-input .search-query {
+	border-bottom: 1px solid #d0d0d0 !important;
+	margin-bottom: 0px !important;
+	height: 33px !important
+}
+.ps-code h1 { font-size:21px; font-weight: 400;}
+
+/*---------------------Calendar Start -----------------------------*/
+
+.fc button {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    height: 2.6em !important;
+    padding: 0 1em !important;
+    font-size: 1em;
+    white-space: nowrap;
+    cursor: pointer;
+    background: #FFF;
+}
+.fc-prev-button, .fc-next-button  {  
+    float: left!important; border: 0 !important; font-size: 16px !important;
+}
+.fc-toolbar h2 {
+    margin: 0;float: left!important; font-size: 18px !important; font-weight: 300; margin: 6px !important;
+}
+
+.fc-icon {
+    display: inline-block;
+    font-size: 2.5em !important;
+    line-height: 0.5em !important;
+    height: 2.5em !important;
+    font-family: 'Roboto', sans-serif !important;
+}
+
+.fc-ltr .fc-axis {   
+    width: 80px !important;
+}
+
+.fc .fc-axis {
+    vertical-align: middle;
+    padding: 6px !important;
+    white-space: nowrap;
+}
+.fc-event {   
+	font-size: 1em !important;
+}
+.fc-unthemed .fc-today {
+    background: #f2f2f2 !important;
+}
+.fc-event { background: #2ba2da !important;}
+.fc th {
+	text-align: center;
+	padding: 6px !important; 
+	font-size: 15px; font-weight: 400;
+}
+.fc-ltr .fc-basic-view .fc-day-number {
+    font-size: 15px; font-weight: 300; padding: 6px !important;
+}
+.fc-basic-view td.fc-day-number, .fc-basic-view td.fc-week-number span {
+    padding: 5px !important;    
+}
+.fc-time-grid-event .fc-time, .fc-time-grid-event .fc-title {   
+    font-size: 16px;
+}
+.fc-time-grid-event>.fc-content {
+    position: relative;
+    z-index: 2;
+    padding: 8px;
+}
+.fc button { padding: 0 10px !important;}
+
+.fc button .fc-icon {
+    position: relative;
+     top: 0 !important;
+    margin: 0 .1em;
+}
+
+.fc-icon-left-single-arrow:after {
+    content: "\02039";
+    font-weight: 300 !important;
+}
+.fc-icon-right-single-arrow:after {
+    content: "\0203A";
+    font-weight: 300 !important;
+}
+
+.fc-state-default {
+    background-color: #f5f5f5;
+    background-image:none !important; 
+    border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+    border-color: rgba(0,0,0,.0) rgba(0,0,0,.1) rgba(0,0,0,.25);
+    color: #333;
+    text-shadow: 0 !important;
+    box-shadow: inset 0 !important;
+}
+
+
+
+.fc-toolbar button:focus {   
+    outline: none !important;
+}
+
+.fc-state-active, .fc-state-down {   
+    box-shadow: inset 0 !important;
+}
+.fc-state-active, .fc-state-down {
+  
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0), 0 1px 2px rgba(255, 255, 255, 0) !important;
+}
+.fc-state-active { background: #2ba2da !important; color: #FFF !important;}
+
+.fc-toolbar .fc-center {   
+    width: 410px !important;
+}
+
+
+/*---------------------Calendar End -----------------------------*/
 
 @media only screen and (max-width:1366px) {	
 

@@ -944,11 +944,11 @@ label.note {
 	opacity: .5;
 	cursor: default
 }
-#row2 {
+.row-2 {
 	align-items: stretch;
 	padding: 10px;
 }
-#row2 .appointment {
+.row-2 .appointment {
 	padding: 13px 15px;
 	background: #fff;
 	cursor: pointer;
@@ -957,25 +957,25 @@ label.note {
 	box-shadow: 0px 0px 5px 0px #e6e4e4;
 	margin: 0px 0px 20px 0
 }
-#row2 .appointment:hover {
+.row-2 .appointment:hover {
 	background: #efefef;
 	transition: all 0.2s ease-in-out;
 }
-#row2 .appointment.select {
+.row-2 .appointment.select {
 	background: #bbe5ff;
 }
-#row2 .appointment p {
+.row-2 .appointment p {
 	font-size: 16px;
 	padding-bottom: 2px;
 	font-weight:400;
 }
-#row2 .appointment .pull-right {
+.row-2 .appointment .pull-right {
 	color: #2ba2da; font-size: 14px; font-weight: 400;
 }
-#row2 .appointment span {
+.row-2 .appointment span {
 	font-size: 14px;
 }
-#row2 .appointment:last-child {
+.row-2 .appointment:last-child {
 	margin-right: 0;
 }
 .staffListDeskstop .owl-item {
@@ -1092,58 +1092,63 @@ span.limit {
 #freeplan span {
 	font-size: 13px;
 }
-#planList {
+
+.plan .carousel-inner{overflow-y:visible !important; overflow-x: hidden !important; padding:0 0 5px 0;}
+.plan .carousel-control.left, .plan .carousel-control.right { background: none;}
+
+.planList {
 	margin: 20px auto;
-	display: flex;
+	display: flex ;
 	align-items: stretch;
-	width: 700px;
+	width:650px;
 }
-#planList .listItem {
-	flex-grow: 4;
+.planList .listItem {
+	
 	background: #fff;
 	padding: 15px 15px;
 	margin-right: 20px;
 	border-radius: 5px;
 	text-align: center;
 	box-shadow: 0px 0px 5px 0px #e6e4e4;
-	height: 650px;
+	height: 630px;
 	overflow-y: auto;
-	width: 300px;
+	width: 315px;
+	float: left;
 }
-#planList .listItem:last-child {
+.planList .listItem:last-child {
 	margin-right: 0;
 }
-#planList .listItem h4,  #planList .listItem span,  #planList .listItem h5,  #planList .listItem button {
+.planList .listItem h4,  .planList .listItem span,  .planList .listItem h5,  .planList .listItem button {
 	margin-bottom: 20px;
 }
-#planList .listItem h4 {
+.planList .listItem h4 {
 	text-transform: uppercase;
 	font-size: 24px;
 }
-#planList .listItem span {
+.planList .listItem span {
 	color: #000;
 	font-size: 16px;
 	display: block;
 }
-#planList .listItem h5 {
+.planList .listItem h5 {
 	color: #000;
 	font-weight: 400;
 }
-#planList .listItem h5 label {
+.planList .listItem h5 label {
 	color: #000;
 	font-weight:400 !important;
 	font-size:26px;
 }
-#planList .listItem h5 label sup {
+.planList .listItem h5 label sup {
 	font-size: 14px;
 }
-#planList .listItem .btn {
+.planList .listItem .btn {
 	color: #fff;
 	font-size: 20px;
 	padding: 10px 25px;
 	border-radius: 10px;
 }
-#planList .listItem ul {
+.planList .listItem ul {
 	text-align: left;
 	word-wrap: break-word;
 	padding: 0 15px;
@@ -1151,7 +1156,7 @@ span.limit {
 	line-height: 24px;
 	color: #8a95a6;
 }
-#planList .listItem ul li {
+.planList .listItem ul li {
 	margin-bottom: 15px;
 	background: url(../images/checked.png) no-repeat left 5px;
 	padding-left: 25px;
@@ -1914,13 +1919,14 @@ a.gear {
 	font-size: 14px;
 	padding-bottom: 5px;
 	color: #333;
+	margin-top: 10px;
 }
 .form-details label i {
 	color: #ccc;
 	font-weight: 300;
 }
 .form-details input[type=text], .form-details select, .form-details input[type=file] {
-	margin-bottom: 15px;
+	margin-bottom: 0px;
 }
 .form-details span {
 	display: block;
@@ -2151,21 +2157,21 @@ ul.addons li span {
 .padding15px {
 	padding: 10px;
 }
-#planList .listItem {
+.planList .listItem {
 	margin-right: 5px;
 }
-#planList .listItem h4 {
+.planList .listItem h4 {
 	font-size: 20px;
 }
-#planList .listItem .btn {
+.planList .listItem .btn {
 	font-size: 16px;
 	padding: 5px 10px;
 	border-radius: 5px;
 }
-#planList .listItem h4,  #planList .listItem span,  #planList .listItem h5,  #planList .listItem button {
+.planList .listItem h4,  .planList .listItem span,  .planList .listItem h5,  .planList .listItem button {
 	margin-bottom: 15px;
 }
-#planList .listItem ul {
+.planList .listItem ul {
 	font-size: 13px;
 	line-height: 20px;
 }
@@ -2209,11 +2215,11 @@ label.right72px, label.right62px {
 label.right35px,  label.right45px,  label.right47px,  label.right72px,  label.right62px {
 	margin-right: 5px;
 }
-#planList .listItem ul {
+.planList .listItem ul {
 	font-size: 11px;
 	line-height: 13px;
 }
-#planList .listItem ul li {
+.planList .listItem ul li {
 	padding: 5px 0 5px 20px;
 	
 }
@@ -2267,7 +2273,7 @@ main {
 .noborderradius {
 	border-radius: 0 !important;
 }
-#businessHours,  #bhlist,  #scheduleBar,  .footlink,  .footnote,  #planList {
+#businessHours,  #bhlist,  #scheduleBar,  .footlink,  .footnote,  .planList {
 	display: none;
 }
 .padding15px {
@@ -2639,7 +2645,7 @@ a#showTn1 {
 }
 .mobileappointed .appointment p {
 }
-#row2 {
+.row-2 {
 	padding: 0;
 }
 .ssmobile {

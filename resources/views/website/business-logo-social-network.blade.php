@@ -45,7 +45,7 @@ Squeedr
                               </div> -->
                            </div>
                         </div>
-                        <input type="file" id="profile-image" name="profile_image" style="display: none;">
+                        <input accept="image/*" type="file" id="profile-image" name="profile_image" style="display: none;">
                         <input type="hidden" name="old_profile_image" id="old_profile_image" value="<?=$userDetails->profile_image?>">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                            <div class="form-details">

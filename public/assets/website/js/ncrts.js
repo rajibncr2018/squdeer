@@ -271,3 +271,89 @@ $(".chnage-service-status").click(function (e) {
     });
     
 });
+
+    $('#add_client_form').validate({
+            rules: {
+                client_name: {
+                    required: true
+                },
+                client_email: {
+                    required: true,
+                    email: true
+                },
+                client_mobile: {
+                    required: true,
+                    number: true,
+                    minlength: 10,
+                    maxlength: 10
+                },
+            },
+            messages: {
+                client_name: {
+                    required: 'Please enter fullname'
+                },
+                client_email: {
+                    required: 'Please enter email',
+                    email: 'Please enter proper email'
+                },
+                client_mobile: {
+                    required: 'Please enter mobile no',
+                    number: 'Please enter proper mobile no',
+                    minlength: 'Please enter minimum 10 digit mobile no',
+                    maxlength: 'Please enter maximum 10 digit mobile no'
+                },
+            },
+            errorPlacement: function(error, element) {
+                if (element.attr("name") == "client_name") {
+                    error.insertAfter($('#clientname_error'));
+                } else if (element.attr("name") == "client_email") {
+                    error.insertAfter($('#clientemail_error'));
+                } else if (element.attr("name") == "client_mobile") {
+                    error.insertAfter($('#clientmobile_error'));
+                } 
+            },
+            submitHandler: function(form) {
+                    var data = $(form).serializeArray();
+                    data = addCommonParams(data);
+                    var files = $("#add_team_member_form input[type='file']")[0].files;
+                    var form_data = new FormData();
+                    if (files.length > 0) {
+                        for (var i = 0; i < files.length; i++) {
+                            form_data.append('staff_profile_picture', files[i]);
+                        }
+                    } 
+          // append all data in form data 
+      $.each(data, function(ia, l) {
+          form_data.append(l.name, l.value);
+        });
+        $.ajax({
+        url: form.action,
+        type: form.method,
+        data: form_data,
+        dataType: "json",
+        processData: false, // tell jQuery not to process the data 
+        contentType: false, // tell jQuery not to set contentType 
+        success: function(response) {
+          console.log(response); //Success//
+          if (response.response_status == 1) {
+            $(form)[0].reset();
+            $('#myModaladdclient').modal('hide');
+            swal('Success!', response.response_message, 'success');
+            location.reload();
+          } else {
+            swal('Sorry!', response.response_message, 'error');
+          }
+        },
+        beforeSend: function() {
+          $('.animationload').show();
+        },
+        complete: function() {
+          $('.animationload').hide();
+        }
+        });
+        }
+        });
+        
+
+
+
