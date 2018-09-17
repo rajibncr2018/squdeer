@@ -52,6 +52,7 @@ class ClientsController extends ApiController {
             $client_work_phone = $request->input('client_work_phone');
             $client_category = $request->input('client_category');
             $client_address = $request->input('client_address')?$request->input('client_address'):"";
+
             $client_timezone = $request->input('client_timezone');
             $client_note = $request->input('client_note');
 
@@ -66,7 +67,9 @@ class ClientsController extends ApiController {
 				'or'=>array('client_email' => $client_email)
 			);
                         
+
             $result = $this->common_model->fetchData($this->tableObj->tableNameClient,$conditions);
+
             //echo '<pre>'; print_r($result); exit;
             if(!empty($result))
             {
@@ -91,6 +94,7 @@ class ClientsController extends ApiController {
                 $client_data['client_address'] = $client_address;
                 $client_data['client_timezone'] = $client_timezone;
                 $client_data['client_note'] = $client_note;
+
                 //$client_data['password'] = md5($password);
                 $client_data['email_verification_code'] = $token;
 
@@ -151,6 +155,7 @@ class ClientsController extends ApiController {
 		}
 		$client_list = $this->common_model->fetchDatas($this->tableObj->tableNameClient,$findCond,$selectFields=array());
 		$response_data['client_list']=$client_list;
+
 		$this->response_status='1';
 		// generate the service / api response
 		$this->json_output($response_data);

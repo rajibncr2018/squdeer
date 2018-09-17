@@ -34,17 +34,7 @@ Squeedr
                         <div class="col-lg-6 col-md-6 col-sm-6">
                            <div class="form-details">
                               <label for="Profession">Profession</label>
-                              <select class="form-control" name="profession">
-                                <option value="">Select profession</option>
-                                <?php
-                                foreach($professions as $key => $prof)
-                                {
-                                ?>
-                                <option value="<?=$prof->profession_id;?>" <?=$prof->profession_id==$userDetails->profession ? "selected" : "";?>><?=$prof->profession;?></option>
-                                <?php
-                                }
-                                ?>
-                              </select>
+                              <input type="text" class="form-control" name="profession" id="profession" placeholder="Profession" value="<?=$profession_name;?>">
                               <label for="Business Name">Business Name</label>
                               <input class="form-control" type="text" name="business_name" placeholder="Business name" value="<?=$userDetails->business_name ? $userDetails->business_name : "";?>" />
                               <label for="Business Location">Business Location</label>
@@ -74,11 +64,11 @@ Squeedr
                                  </div>
                                  <div class="col-lg-6 col-md-6 col-sm-6">
                                     <label for="Region">Country</label>
-                                    <input id="country" placeholder="Country" name="country" class="form-control"></input>
+                                    <input id="country" placeholder="Country" name="country" class="form-control" value="<?=$country_name;?>" readonly=""></input>
                                  </div>
                                  <div class="col-lg-6 col-md-6 col-sm-6">
                                     <label for="City">Mobile Phone</label>
-                                    <input class="form-control" type="text" name="mobile" placeholder="Mobile Phone" value="<?=$userDetails->mobile ? $userDetails->mobile : "";?>"/>
+                                    <input class="form-control" type="text" name="mobile" placeholder="Mobile Phone" value="<?=$userDetails->mobile ? $userDetails->mobile : "";?>" readonly=""/>
                                  </div>
                                  <div class="col-lg-6 col-md-6 col-sm-6">
                                     <label for="Region">Office Phone</label>
@@ -210,6 +200,7 @@ function countChar(val) {
   }
 };
 </script>
+
 
 
 

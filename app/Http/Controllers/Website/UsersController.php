@@ -148,7 +148,6 @@ class UsersController extends ApiController {
             );
             $prof_data = $this->common_model->fetchData($this->tableObj->tableNameProfession, $prof_conditions);
 
-
 			$country_key = array_search($userDetails->country, array_column($country, 'country_no'));
 			$data['country_name'] = $country[$country_key]->country_name;
 			$data['profession_name'] = $prof_data->profession;
@@ -236,6 +235,7 @@ class UsersController extends ApiController {
            return redirect('/login');
 		}
 
+
 		// Call API //
 		$post_data = $authdata;
 		$post_data['page_no']=1;
@@ -258,6 +258,7 @@ class UsersController extends ApiController {
 			return $return;
 		}
 		//return view('website.client.client-database');
+
 	}
 
 	public function staff_details()

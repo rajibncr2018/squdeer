@@ -387,7 +387,8 @@ class BaseApiController extends BaseController
             $is_email_send=true;
             switch($mailType){
                 case 1:// email verification link 
-                    $mail_subject = trans('message.mail.subject_email_verify');
+                    //$mail_subject = trans('message.mail.subject_email_verify');
+                    $mail_subject = "Emmail verification link";
                     $mail_body="Your verification link is : ".$emailData['verify_link'];
                     $verify_link=$emailData['verify_link'];
                     $mailTemplateName="emails/general";
@@ -415,6 +416,13 @@ class BaseApiController extends BaseController
                 case 5: // Staff Email Verification 
                     $mail_subject = "User Account Details.";
                     $mail_body="Here is the Login Credentails of your accont. Username : ".$emailData['username']." Password : ".$emailData['password'];
+                    $mailTemplateName="emails/general";
+                    $emailData['mailBody']=$mail_body;
+                break;
+                case 5: // Staff Email Verification 
+                    $mail_subject = "Client Successfully Added.";
+                    //$mail_body="Here is the Login Credentails of your accont. Username : ".$emailData['username']." Password : ".$emailData['password'];
+                    $mail_body = "Dear <br> ".$emailData['toName'].", Your are successfully added as a client on Squeedr.";
                     $mailTemplateName="emails/general";
                     $emailData['mailBody']=$mail_body;
                 break;
@@ -565,6 +573,39 @@ class BaseApiController extends BaseController
                 setcookie($cookie_name,'',time()-3600,'/');
             }
         }
+    }
+
+    /** timezone*/
+
+    /*public function time_zone()
+    {
+        $zones_array = array();
+        $timestamp = time();
+        foreach(timezone_identifiers_list() as $key => $zone)
+        {
+            date_default_timezone_set($zone);
+            $zones_array[$key]['zone'] = $zone;
+            $zones_array[$key]['diff_from_GMT'] = 'UTC/GMT ' . date('P', $timestamp);
+        }
+        return $zones_array;
+    }*/
+
+    public static function time_zone()
+    {
+        $data = array();
+        $obj = new Request();
+        $ci = new BaseApiController($obj);
+        $zones_array = array();
+        $timestamp = time();
+        foreach(timezone_identifiers_list() as $key => $zone)
+        {
+            date_default_timezone_set($zone);
+            $zones_array[$key]['zone'] = $zone;
+            $zones_array[$key]['diff_from_GMT'] = 'UTC/GMT ' . date('P', $timestamp);
+        }
+        $data = $zones_array;
+        //echo '<pre>'; print_r($data); exit;
+        return $data;
     }
 
 }

@@ -31,7 +31,19 @@
 	  @yield('custom_css') 
    </head>
    <body>
-      <?php $basicdatas = App\Http\Controllers\BaseApiController::category_list(); function get_times( $default = '00:00', $interval = '+30 minutes' ) { $output = '<option value=""></option>'; $current = strtotime( '00:00' ); $end = strtotime( '23:59' ); while( $current <= $end ) { $time = date( 'H:i', $current ); $sel = ( $time == $default ) ? ' selected' : ''; $output .= "<option value=\"{$time}\"{$sel}>" . date( 'h.i A', $current ) .'</option>'; $current = strtotime( $interval, $current ); } return $output; } ?> 
+      <?php 
+      $basicdatas = App\Http\Controllers\BaseApiController::category_list(); 
+      function get_times( $default = '00:00', $interval = '+30 minutes' ) { 
+         $output = '<option value=""></option>'; 
+         $current = strtotime( '00:00' ); 
+         $end = strtotime( '23:59' ); 
+         while( $current <= $end ) { 
+            $time = date( 'H:i', $current ); $sel = ( $time == $default ) ? ' selected' : ''; $output .= "<option value=\"{$time}\"{$sel}>" . date( 'h.i A', $current ) .'</option>'; $current = strtotime( $interval, $current ); 
+         } 
+         return $output; 
+      } 
+      $timezone = App\Http\Controllers\BaseApiController::time_zone(); 
+      ?> 
       <div class="animationload" style="display: none;">
          <div class="osahanloading"></div>
       </div>
@@ -467,7 +479,7 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
-                           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                           <div class="input-group" id="clientname_error"> <span class="input-group-addon"><i class="fa fa-user"></i></span>
                               <input id="client_name" type="text" class="form-control" name="client_name" placeholder="Full Name">
                            </div>
                         </div>
@@ -476,7 +488,7 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
-                           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                           <div class="input-group" id="clientemail_error"> <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                               <input id="client_email" type="text" class="form-control" name="client_email" placeholder="Email Address">
                            </div>
                         </div>
@@ -485,7 +497,7 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
-                           <div class="input-group" id="mobile_error"> <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                           <div class="input-group" id="clientmobile_error"> <span class="input-group-addon"><i class="fa fa-phone"></i></span>
                               <input id="client_mobile" type="text" class="form-control" name="client_mobile" placeholder="Mobile" style="width: 92%;">               
                            </div>
                            <a style="position: absolute; right:15px; top:8px; font-size: 18px" role="button" data-toggle="collapse" data-target="#client_other_phone" id="client_more_phone"><i class="fa fa-plus"></i></a>
@@ -518,22 +530,23 @@
                                  <option>Category Name</option>
                                  </select>-->
                               <div class="form-group nomarging custom-select color-b" >
-                                 <select>
-                                    <option>Select Category </option>
-                                    <option>Service </option>
-                                    <option>Pack Passes </option>
-                                    <option>Resource </option>
-                                    <option>Meetings </option>
-                                    <option>New Category </option>
-                                    <option>Category </option>
-                                 </select>
+                                  <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="client_category" id="client_category" >
+                                    <option value="">Select Category </option>
+                                    <?php
+                                    if(!empty($basicdatas['category_list']))
+                                    foreach ($basicdatas['category_list'] as $key => $value)
+                                    {
+                                        echo "<option value='".$value->category_id."'>".$value->category."</option>";
+                                    }
+                                    ?>
+                                  </select>
                                  <div class="clearfix"></div>
                               </div>
                            </div>
                         </div>
                      </div>
                   </div>
-                  <div class="row">
+                  <!-- <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
                            <div class="input-group">
@@ -547,12 +560,14 @@
                            </div>
                         </div>
                      </div>
-                  </div>
+                  </div> -->
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
                            <div class="input-group"> <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-                              <input id="name1" type="text" class="form-control" name="name" placeholder="Address">
+                              <div id="locationField">
+                                <input id="autocomplete" placeholder="Address" onFocus="geolocate()" type="text" class="form-control" name="client_address"></input>
+                              </div>
                            </div>
                         </div>
                      </div>
@@ -560,8 +575,27 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
-                           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-clock-o "></i></span>
-                              <input id="name1" type="text" class="form-control" name="name" placeholder="Timezone">
+                           <div class="input-group"> 
+                              <span class="input-group-addon"><i class="fa fa-clock-o "></i></span>
+                              <!--<select class="form-control">
+                                 <option>Category Name</option>
+                                 </select>-->
+                              <div class="form-group nomarging custom-select color-b" >
+                                  <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="client_timezone" id="client_timezone" >
+                                    <option value="">Select Timezone </option>
+                                    <?php
+                                    foreach($timezone as $tzone)
+                                    {
+                                    ?>
+                                    <option value="<?=$tzone['zone'] ?>">
+                                      <?=$tzone['diff_from_GMT'] . ' - ' . $tzone['zone'] ?>
+                                    </option>
+                                    <?php
+                                    }
+                                    ?>
+                                  </select>
+                                 <div class="clearfix"></div>
+                              </div>
                            </div>
                         </div>
                      </div>
@@ -570,7 +604,7 @@
                      <div class="col-md-12">
                         <div class="form-group">
                            <div class="input-group textarea-md"> <span class="input-group-addon"><i class="fa fa-file"></i></span>
-                              <textarea style="width: 100%" id="area" placeholder="Notes"></textarea>
+                              <textarea style="width: 100%" name="client_note" id="client_note" placeholder="Client Note"></textarea>
                            </div>
                         </div>
                      </div>
@@ -578,7 +612,7 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
-                           <input name="" type="checkbox" value=""> Send Email confirmation
+                           <input name="client_send_email" id="client_send_email" type="checkbox" value=""> Send Email confirmation
                         </div>
                      </div>
                   </div>
@@ -704,7 +738,7 @@
                            <div class="add-gly">
                               <div class="add-picture"><img id="blah" src="#" alt="" style="display:none;" width="60px" height="60px" /></div>
                               <!--<div class="add-picture-text">UPLOAD PICTURE</div>-->
-                              <input type="file" name="staff_profile_picture" id="staff_profile_picture"  accept="image/*" style="margin: 30px 0; padding: 0 4px;">
+                              <input type="file" name="staff_profile_picture" id="staff_profile_picture" style="margin: 30px 0; padding: 0 4px;">
                            </div>
                         </div>
                      </div>
@@ -1404,7 +1438,6 @@
          </div>
       </div>
       <!--====================================Modal area End ========================================--> 
-
 	  <script src="{{asset('public/assets/website/js/jquery.min.js')}}"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="{{asset('public/assets/website/js/parallax.min.js')}}"></script>
@@ -1490,7 +1523,50 @@
 			slideAlert.open();
 		});
 	</script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("ul.menu li a").click(function() {
+				$(this).addClass("active");
+				$(("li a.active")).not($(this)).removeClass("active");
+			});
+			$(".closePopUp").click(function() {
+				$(".profilepopup").fadeOut();
+				$('body').css('overflow-y', 'auto');
+			});
+			$('.owl-carousel').owlCarousel({
+				loop: true,
+				margin: 10,
+				responsiveClass: true,
+				responsive: {
+					0: {
+						items: 8,
+						nav: true,
+						margin: 20
+					},
+					600: {
+						items: 8,
+						nav: true,
+						margin: 22
+					},
+					1000: {
+						items: 10,
+						nav: false,
+						loop: true,
+						margin: 25
+					}
+				}
+			});
+		});
 
+		function ShowPopup() {
+			$("#popup").fadeToggle();
+		}
+
+		function showSqeeder() {
+			$(".profilepopup").fadeIn();
+			$('body').css('overflow-y', 'hidden');
+		}
+	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("ul.menu li a").click(function() {
@@ -1555,12 +1631,6 @@
 	<script src="{{asset('public/assets/website/js/ncrtsdev.js')}}"></script>
 	
 	<script>
-		// Add New Staff (New Member) // 
-		/*$("#add_team_member_form").bind('click',function(e){
-		   e.preventDefault();
-		   $('#add_team_member_form').submit();
-		});*/
-
 		$('#add_team_member_form').validate({
             rules: {
                 staff_fullname: {
@@ -1717,6 +1787,89 @@
 	<?php
 	}
 	?>
+
+   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgeuUB8s5lliHSAP_GKnXd70XwlAZa4WE&libraries=places&callback=initAutocomplete"
+        async defer></script>
+   <script>
+   // This example displays an address form, using the autocomplete feature
+   // of the Google Places API to help users fill in the information.
+
+   // This example requires the Places library. Include the libraries=places
+   // parameter when you first load the API. For example:
+   // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+   var placeSearch, autocomplete;
+   var componentForm = {
+     street_number: 'short_name',
+     route: 'long_name',
+     locality: 'long_name',
+     administrative_area_level_1: 'short_name',
+     country: 'long_name',
+     postal_code: 'short_name'
+   };
+
+   function initAutocomplete() {
+     // Create the autocomplete object, restricting the search to geographical
+     // location types.
+     autocomplete = new google.maps.places.Autocomplete(
+         /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+         {types: ['geocode']});
+
+     // When the user selects an address from the dropdown, populate the address
+     // fields in the form.
+     autocomplete.addListener('place_changed', fillInAddress);
+   }
+
+   function fillInAddress() {
+     // Get the place details from the autocomplete object.
+     var place = autocomplete.getPlace();
+
+     for (var component in componentForm) {
+       document.getElementById(component).value = '';
+       document.getElementById(component).disabled = false;
+     }
+
+     // Get each component of the address from the place details
+     // and fill the corresponding field on the form.
+     for (var i = 0; i < place.address_components.length; i++) {
+       var addressType = place.address_components[i].types[0];
+       if (componentForm[addressType]) {
+         var val = place.address_components[i][componentForm[addressType]];
+         document.getElementById(addressType).value = val;
+       }
+     }
+   }
+
+   // Bias the autocomplete object to the user's geographical location,
+   // as supplied by the browser's 'navigator.geolocation' object.
+   function geolocate() {
+     if (navigator.geolocation) {
+       navigator.geolocation.getCurrentPosition(function(position) {
+         var geolocation = {
+           lat: position.coords.latitude,
+           lng: position.coords.longitude
+         };
+         var circle = new google.maps.Circle({
+           center: geolocation,
+           radius: position.coords.accuracy
+         });
+         autocomplete.setBounds(circle.getBounds());
+       });
+     }
+   } 
+   </script>
+
+   <script>
+   function countChar(val) {
+     var len = val.value.length;
+     if (len >= 1000) {
+       val.value = val.value.substring(0, 1000);
+     } else {
+      var count = 1000 - len;
+       $('#specialnote_count').text('HTML Tags not allowed, '+count+' characters remaining');
+     }
+   };
+   </script>
 	<script src="{{asset('public/assets/website/js/ncrts.js')}}"></script>
 	  @yield('custom_js') 
    </body>

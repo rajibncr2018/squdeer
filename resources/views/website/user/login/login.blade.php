@@ -21,6 +21,26 @@
   <div class="login-container">
   <div class="login-webview">
    <div class="logo-login"><img src="{{asset('public/assets/website/images/logo-login.png')}}"></div> 
+   <?php 
+    if (Session::has('error_message')) 
+    {
+    ?>
+        <div class="alert alert-danger alert-dismissible margin-t-10" style="margin-bottom:15px;">
+          <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+          <p><i class="icon fa fa-warning"></i><strong>Sorry!</strong>{{Session::get('error_message')}}</p>
+        </div> 
+    <?php
+    } 
+    if (Session::has('success_message')) 
+    {
+    ?>
+        <div class="alert alert-success alert-dismissible margin-t-10" style="margin-bottom:15px;">
+          <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+          <p><i class="icon fa fa-check"></i><strong>Success!</strong>{{Session::get('success_message')}}</p>
+        </div> 
+    <?php
+    } 
+    ?> 
     <div class="login-type"><a href="#" class="active">Admin Login</a> &nbsp; &nbsp; <a href="#">Team Login</a></div>
     <div class="login-form">
       <form action="{{ url('api/login') }}" method="post" autocomplete="off" id="loginform">

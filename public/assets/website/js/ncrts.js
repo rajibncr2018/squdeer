@@ -98,7 +98,7 @@
 
        submitHandler: function(form) {
          var data = $(form).serializeArray();
-         //data = addCommonParams(data);
+         data = addCommonParams(data);
          $.ajax({
              url: form.action,
              type: form.method,
@@ -131,40 +131,229 @@ $("#business-info-update").bind('click',function(e){
    $('#update-contact-info').submit();
 });
 
-//================Submit AJAX request ==================
- $('#update-logo-social').validate({
 
-       submitHandler: function(form) {
-         var data = $(form).serializeArray();
-         //data = addCommonParams(data);
-         $.ajax({
-             url: form.action,
-             type: form.method,
-             data:data ,
-             dataType: "json",
-             success: function(response) {
-               console.log(response);
-               if(response.result=='1')
-               {
-                  swal("Success!", response.message, "success")
-               }
-               else
-               {
-                   swal("Error", response.message , "error");
-               }
-             },
-             beforeSend: function(){
-                 $('.animationload').show();
-             },
-             complete: function(){
-                 $('.animationload').hide();
-             }
-         });
-       }
-   });
- //================Submit AJAX request ==================
-
-$("#business-logo-social-info-update").bind('click',function(e){
+$("#profile-image-upload").on('click',function(e){
    e.preventDefault();
-   $('#update-contact-info').submit();
+   $( "#profile-image" ).trigger( "click" );
 });
+
+
+function readURL(input)
+{
+    if (input.files && input.files[0])
+    {
+        var reader = new FileReader();
+        reader.onload = function (e) 
+        {
+            $('#image_upload_preview').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+
+
+$("#profile-image").change(function () {
+    readURL(this);
+    $('#profile-image-remove').show();
+});
+
+$("#profile-image-remove").click(function (e) {
+    e.preventDefault();
+    $('.animationload').show();
+    $('#profile-image-remove').hide();
+    $('#old_profile_image').val('');
+    $('#profile-image').val('');
+    $('#image_upload_preview').attr('src', baseUrl+'/public/assets/website/images/picture.png');
+    $('.animationload').hide();
+
+});
+
+//==================social & logo update=====================
+
+$("#update-social-logo").on('submit', (function(e) {
+    e.preventDefault();
+    //data = addCommonParams(data);
+
+    var data = $('#update-social-logo').serializeArray();
+    data = addCommonParams(data);
+    var files = $("#update-social-logo input[type='file']")[0].files;
+    var form_data = new FormData();
+    if(files.length>0){
+        for(var i=0;i<files.length;i++){
+            form_data.append('profile_image',files[i]);
+        }
+    }
+    // append all data in form data 
+    $.each(data, function( ia, l ){
+        form_data.append(l.name, l.value);
+    });
+
+    $.ajax({
+        url: baseUrl+"/api/update-logo-social", // Url to which the request is send
+        type: "POST", // Type of request to be send, called as method
+        data: form_data, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+        contentType: false, // The content type used when sending data to the server.
+        cache: false, // To unable request pages to be cached
+        processData: false, // To send DOMDocument or non processed data file it is set to false
+        dataType: "json",
+        success: function(response) // A function to be called if request succeeds
+        {
+            console.log(response);
+            $('.animationload').hide();
+            if(response.result=='1')
+            {
+                swal("Success!", response.message, "success")
+            }
+            else
+            {
+                swal("Error", response.message , "error");
+            }
+        },
+        beforeSend: function()
+        {
+            $('.animationload').show();
+        },
+        complete: function()
+        {
+            //$('.animationload').hide();
+        }
+    });
+}));
+
+//==================social & logo update=====================
+
+$(".service-list").click(function (e) {
+    e.preventDefault();
+    $('.animationload').show();
+    $('.service-list').removeClass("active");
+    $(this).addClass("active");
+    $(".break40px").hide();
+    let id = $(this).attr('id');
+    $("#row"+id).show();
+    $('.animationload').hide();
+
+});
+
+
+$(".chnage-service-status").click(function (e) {
+    e.preventDefault();
+    
+    let data = addCommonParams([]);
+    let id = $(this).attr('id');
+    data.push({name:'service_id',value:id});
+    $.ajax({
+        url: baseUrl+"/api/chnage-service-status", 
+        type: "POST", 
+        data: data, 
+        dataType: "json",
+        success: function(response) 
+        {
+            console.log(response);
+            $('.animationload').hide();
+            if(response.result=='1')
+            {
+                swal("Success!", response.message, "success")
+            }
+            else
+            {
+                swal("Error", response.message , "error");
+            }
+        },
+        beforeSend: function()
+        {
+            $('.animationload').show();
+        },
+        complete: function()
+        {
+            //$('.animationload').hide();
+        }
+    });
+    
+});
+
+    $('#add_client_form').validate({
+            rules: {
+                client_name: {
+                    required: true
+                },
+                client_email: {
+                    required: true,
+                    email: true
+                },
+                client_mobile: {
+                    required: true,
+                    number: true,
+                    minlength: 10,
+                    maxlength: 10
+                },
+            },
+            messages: {
+                client_name: {
+                    required: 'Please enter fullname'
+                },
+                client_email: {
+                    required: 'Please enter email',
+                    email: 'Please enter proper email'
+                },
+                client_mobile: {
+                    required: 'Please enter mobile no',
+                    number: 'Please enter proper mobile no',
+                    minlength: 'Please enter minimum 10 digit mobile no',
+                    maxlength: 'Please enter maximum 10 digit mobile no'
+                },
+            },
+            errorPlacement: function(error, element) {
+                if (element.attr("name") == "client_name") {
+                    error.insertAfter($('#clientname_error'));
+                } else if (element.attr("name") == "client_email") {
+                    error.insertAfter($('#clientemail_error'));
+                } else if (element.attr("name") == "client_mobile") {
+                    error.insertAfter($('#clientmobile_error'));
+                } 
+            },
+            submitHandler: function(form) {
+                    var data = $(form).serializeArray();
+                    data = addCommonParams(data);
+                    var files = $("#add_team_member_form input[type='file']")[0].files;
+                    var form_data = new FormData();
+                    if (files.length > 0) {
+                        for (var i = 0; i < files.length; i++) {
+                            form_data.append('staff_profile_picture', files[i]);
+                        }
+                    } 
+          // append all data in form data 
+      $.each(data, function(ia, l) {
+          form_data.append(l.name, l.value);
+        });
+        $.ajax({
+        url: form.action,
+        type: form.method,
+        data: form_data,
+        dataType: "json",
+        processData: false, // tell jQuery not to process the data 
+        contentType: false, // tell jQuery not to set contentType 
+        success: function(response) {
+          console.log(response); //Success//
+          if (response.response_status == 1) {
+            $(form)[0].reset();
+            $('#myModaladdclient').modal('hide');
+            swal('Success!', response.response_message, 'success');
+            location.reload();
+          } else {
+            swal('Sorry!', response.response_message, 'error');
+          }
+        },
+        beforeSend: function() {
+          $('.animationload').show();
+        },
+        complete: function() {
+          $('.animationload').hide();
+        }
+        });
+        }
+        });
+        
+
+
+

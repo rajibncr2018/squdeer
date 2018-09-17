@@ -322,4 +322,5 @@ $(document).ready(function(){
     $('.stafflistitem').eq(0).trigger('click');
 });
 </script>
+
 @endsection

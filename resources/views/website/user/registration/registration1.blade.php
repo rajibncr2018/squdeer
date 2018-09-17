@@ -54,24 +54,6 @@
                         <div class="clearfix"></div>
                      </div>
                      <div class="form-group">
-                        <img src="{{asset('public/assets/website/images/reg-icon-phone1.png')}}">
-                        <input type="text" class="form-control required customphone" placeholder="Mobile" name="phone" id="phone">
-                        <div class="clearfix"></div>
-                     </div>
-                     <div class="form-group">
-                        <img src="{{asset('public/assets/website/images/reg-icon-profesion1.png')}}">
-                        <select class="selectpicker required" data-show-subtext="true" data-live-search="true" name="profession" id="profession">
-                           <option value="">Select Profession</option>
-                           <?php
-                           foreach ($professions as $key => $value)
-                           {
-                              echo "<option value='".$value->profession_id."'>".$value->profession."</option>";
-                           }
-                           ?>
-                        </select>
-                        <div class="clearfix"></div>
-                     </div>
-                     <div class="form-group">
                         <img src="{{asset('public/assets/website/images/reg-icon-location.png')}}">
                          <select class="selectpicker required" data-show-subtext="true" data-live-search="true" name="country" id="country"> 
                            <option value="">Select country</option>
@@ -84,6 +66,32 @@
                         </select>
                         <div class="clearfix"></div>
                      </div>
+                     <div class="form-group">
+                        <img src="{{asset('public/assets/website/images/reg-icon-phone1.png')}}">
+                        <div class="row">
+                        <!-- <div class="col-sm-2">
+                        <select >
+                           <option value="">+91</option>
+                        </select>
+                        <div class="clearfix"></div>
+                        </div> -->
+                        <div class="col-sm-3">
+                        <input type="text" class="form-control required customphone" placeholder="Code" name="country_code" id="country_code" readonly="">
+                        </div>
+                        <div class="col-sm-6">
+                        <input type="text" class="form-control required customphone" placeholder="Mobile" name="phone" id="phone">
+                        </div>
+                        </div>
+                        
+                        <div class="clearfix"></div>
+                     </div>
+                     <div class="form-group">
+                        <img src="{{asset('public/assets/website/images/reg-icon-profesion1.png')}}">
+                        <input type="text" class="form-control" name="profession" id="profession" placeholder="Profession">
+                        
+                        <div class="clearfix"></div>
+                     </div>
+                     
                      <button type="submit" id="sing-up">Sign Up</button>
                      <div class="clearfix"></div>
                      <p>By signing up, you agree to our <a href="#">terms of use</a> and 
@@ -97,17 +105,20 @@
       <!-- <script src="js/bootstrap.min.js"></script> -->
 
       <script src="{{asset('public/assets/website/js/jquery.min.js')}}"></script> 
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+      <script src="{{asset('public/assets/website/js/bootstrap.min.js')}}"></script> 
       <script src="{{asset('public/assets/website/js/parallax.min.js')}}"></script> 
       <script src="{{asset('public/assets/website/js/script.js')}}"></script>
       <script src="{{asset('public/assets/website/js/custom-selectbox.js')}}"></script>
       <script src="{{asset('public/assets/website/js/ncrts.js')}}"></script>
        <!--=================select box=========================-->
       <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
-      <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+      <script src="{{asset('public/assets/website/js/jquery.validate.min.js')}}"></script>
       <!--==================Sweetalert=========================-->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
        <!--=================select box=========================-->
+       <!--===========================autocomplete========================-->
+       <script src="{{asset('public/assets/website/js/jquery.autocomplete.min.js')}}"></script>
+       <!--============================autocomplete========================-->
       </script>
       <script type="text/javascript">
          //================Tab select ==================
@@ -135,8 +146,8 @@
       //================Custom validation for 10 digit phone====================
       $.validator.addMethod("phoneUS", function (phone_number, element) {
         phone_number = phone_number.replace(/\s+/g, "");
-        return this.optional(element) || phone_number.length > 11 && phone_number.length < 14;
-      }, "Please specify a valid phone number with country prefix.");
+        return this.optional(element) || phone_number.length > 9 && phone_number.length < 11;
+      }, "Please specify a valid phone number.");
       //================Custom validation for 10 digit phone====================
       </script>
 
@@ -151,8 +162,7 @@
 
       <script type="text/javascript">
 		$.validator.addMethod("pwcheck", function(value) {
-			return /[A-Z]+/.test(value) // consists of only these
-				&& /[a-z]+/.test(value) // has a lowercase letter
+			return /[a-zA-Z]+/.test(value) // consists of only these
 				&& /[0-9]+/.test(value) // has a digit
 				&& /[*@&%!#$]+/.test(value) // has a Special character
 		});
@@ -190,7 +200,7 @@
                 password: {
                     required: 'Please enter password',
 					minlength: 'Please enter minimum 8 character password',
-					pwcheck: 'Password must contain 1 upper case, 1 lower case, 1 digit and 1 special character.'
+					pwcheck: 'Password must contain minimum 1 character, 1 digit and 1 special character.'
                 },
                 phone: {
                     required: 'Please enter mobile'
@@ -263,7 +273,51 @@
           }
           txt.keyup(func).blur(func);
         });
+
+        //fetch country code
+        $("#country").change(function (e) {
+            e.preventDefault();
+            let data = $(this).val();
+            //alert(data);
+            $.ajax({
+                url: js_base_url+"/api/country-phone-code", 
+                type: "POST", 
+                data: { data : data }, 
+                dataType: "json",
+                success: function(response) 
+                {
+                    $('#country_code').val('+'+response.response_message.phonecode);
+                    $('.animationload').hide();
+                },
+                beforeSend: function()
+                {
+                    $('.animationload').show();
+                },
+                complete: function()
+                {
+                    //$('.animationload').hide();
+                }
+            });
+            
+        });
       </script>
+      <script type="text/javascript">
+         var countries = [
+            <?php
+            foreach ($professions as $key => $value)
+            {
+            ?>
+                { value: '<?=$value->profession;?>', data: '<?=$value->profession_id;?>' },
+            <?php
+            }
+            ?>
+            ];
+
+            $('#profession').autocomplete({
+                lookup: countries,
+            });
+      </script>
+
    </body>
 </html>
 

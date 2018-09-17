@@ -2,56 +2,29 @@
 
 
 /* CSS Document */
-
 html {	height: 100%;}
 
 
-
 html, body {
-
 	font-family: 'Roboto', sans-serif;
-
-	font-size: 14px;	
-
+	font-size: 14px;
 	position: relative;
-
 	font-weight: 300 !important;
-
-
 	height: 100%;
-
-	
-
 }
 
 
 
-
-
-
-
 @font-face {
-
 	font-family: 'BookmanOldStyle-Bold';
-
 	src: url('../fonts/BookmanOldStyle-Bold.eot');
-
 	src: url('../fonts/BookmanOldStyle-Bold.woff2') format('woff2'),
-
 		 url('../fonts/BookmanOldStyle-Bold.woff') format('woff'),
-
 		 url('../fonts/BookmanOldStyle-Bold.ttf') format('truetype'),
-
 		 url('../fonts/BookmanOldStyle-Bold.svg#BookmanOldStyle-Bold') format('svg'),
-
 		 url('../fonts/BookmanOldStyle-Bold.eot?#iefix') format('embedded-opentype');
-
 	font-weight: normal;
-
 	font-style: normal;
-
-
-
 }
 
 input:-webkit-autofill,
@@ -81,17 +54,13 @@ select:-webkit-autofill:focus {
 
 
 .small, small {
-
     font-size: 75%;
-
 }
 
 label { font-weight: 300 !important}
 
 h1, h2, h3, h4, h5, h6, h7 {
-
 	font-size: inherit;
-
 }
 
 
