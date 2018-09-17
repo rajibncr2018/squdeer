@@ -130,9 +130,8 @@ class UsersController extends ApiController {
 		// Check User Login. If logged in redirect to dashboard //
 		$authdata = $this->website_login_checked();
 		if((!empty($authdata['user_no']) || $authdata['user_no'] > 0 ) && !empty($authdata['user_request_key'])){
-			$userData = $this->master_data_list($table=$this->tableObj->tableNameUser);	
 			$country = $this->master_data_list($table=$this->tableObj->tableNameCountry);
-			$data['professions'] = $this->master_data_list($table=$this->tableObj->tableNameProfession);
+			$professions = $this->master_data_list($table=$this->tableObj->tableNameProfession);
 
 
 			$user_id = $_COOKIE['sqd_user_no'];
@@ -142,10 +141,19 @@ class UsersController extends ApiController {
 	                    );
 
 			$userDetails = $this->common_model->fetchData($this->tableObj->tableNameUser,$condition);
+			
 
-			/*$country_name = array_search($country_name,$country);
-			print_r($country_name); die();*/
+			$prof_conditions = array(
+                array('profession_id', '=', $userDetails->profession),
+            );
+            $prof_data = $this->common_model->fetchData($this->tableObj->tableNameProfession, $prof_conditions);
+
+
+			$country_key = array_search($userDetails->country, array_column($country, 'country_no'));
+			$data['country_name'] = $country[$country_key]->country_name;
+			$data['profession_name'] = $prof_data->profession;
 			$data['country'] = $country;
+			$data['professions'] = $professions;
 			$data['userDetails'] = $userDetails;
 			//$this->remove_all_cookies(); // for manualy cookie remove testing
 			return view('website.business-contact-info', $data);
@@ -223,12 +231,33 @@ class UsersController extends ApiController {
 
 	public function client_database()
 	{
-		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
-		{
-			return view('website.client-database');
+		$authdata = $this->website_login_checked();
+		if((empty($authdata['user_no']) || ($authdata['user_no']<=0)) || (empty($authdata['user_request_key']))){
+           return redirect('/login');
 		}
 
-		return view('website.client-database');
+		// Call API //
+		$post_data = $authdata;
+		$post_data['page_no']=1;
+		$data=array(
+			'client_list'=>array(),
+			'authdata'=>$authdata
+		);
+		$url_func_name="client_list";
+		$return = $this->curl_call($url_func_name,$post_data);
+		
+		// Check response status. If success return data //		
+		if(isset($return->response_status)){
+			if($return->response_status == 1){
+				$data['client_list'] = $return->client_list;
+			}
+			//echo '<pre>'; print_r($data); exit;
+			return view('website.client.client-database')->with($data);
+		}
+		else{
+			return $return;
+		}
+		//return view('website.client.client-database');
 	}
 
 	public function staff_details()
@@ -260,6 +289,41 @@ class UsersController extends ApiController {
 			return $return;
 		}
 		//return view('website.staff.staff-details');
+	}
+
+	public function services()
+	{
+		// Check User Login. If not logged in redirect to login page //
+		$authdata = $this->website_login_checked();
+		if((empty($authdata['user_no']) || ($authdata['user_no']<=0)) || (empty($authdata['user_request_key']))){
+           return redirect('/login');
+		}
+
+		// Call API //
+		$post_data = $authdata;
+		$post_data['page_no']=1;
+		$data=array(
+			'service_list'=>array(),
+			'authdata'=>$authdata
+		);
+		$url_func_name="service_list";
+		$return = $this->curl_call($url_func_name,$post_data);
+		
+		// Check response status. If success return data //		
+		if(isset($return->response_status))
+		{
+			if($return->response_status == 1)
+			{
+				$data['service_list'] = $return->service_list;
+			}
+			//echo '<pre>'; print_r($data); exit;
+			return view('website.service.services')->with($data);
+		}
+		else{
+			return $return;
+		}
+
+		//return view('website.services');
 	}
 
 	public function booking_options()
@@ -353,15 +417,6 @@ class UsersController extends ApiController {
 		return view('website.invitees');
 	}
 
-	public function services()
-	{
-		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
-		{
-			return view('website.services');
-		}
-
-		return view('website.services');
-	}
 
 	public function payment_options()
 	{
@@ -412,6 +467,79 @@ class UsersController extends ApiController {
 
 		return view('website.invite-contacts');
 	}
+
+	public function add_location()
+	{
+		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
+		{
+			return view('website.add-location');
+		}
+
+		return view('website.add-location');
+	}
+
+	public function privacy_settings()
+	{
+		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
+		{
+			return view('website.privacy-settings');
+		}
+
+		return view('website.privacy-settings');
+
+	}
+
+	public function profile_settings()
+	{
+		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
+		{
+			return view('website.profile-settings');
+		}
+
+		return view('website.profile-settings');
+	}
+
+	public function profile_picture()
+	{
+		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
+		{
+			return view('website.profile-picture');
+		}
+
+		return view('website.profile-picture');
+	}
+
+	public function profile_link()
+	{
+		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
+		{
+			return view('website.profile-link');
+		}
+
+		return view('website.profile-link');
+	}
+
+	public function profile_payment()
+	{
+		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
+		{
+			return view('website.profile-payment');
+		}
+
+		return view('website.profile-payment');
+	}
+
+	public function profile_login()
+	{
+		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
+		{
+			return view('website.profile-login');
+		}
+
+		return view('website.profile-login');
+	}
+
+	
 
 
 	

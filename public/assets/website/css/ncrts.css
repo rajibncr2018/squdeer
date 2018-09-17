@@ -10,7 +10,6 @@
     filter: alpha(opacity=50); /* For IE8 and earlier */
     overflow: hidden;
 }
-
 .osahanloading {
     animation: 1.5s linear 0s normal none infinite running osahanloading;
     background: #fed37f none repeat scroll 0 0;
@@ -23,7 +22,6 @@
     top: 50%;
     width: 50px;
 }
-
 .osahanloading::after {
     animation: 1.5s linear 0s normal none infinite running osahanloading_after;
     border-color: #85d6de transparent;
@@ -37,7 +35,6 @@
     top: -15px;
     width: 80px;
 }
-
 @keyframes osahanloading {
     0% {
         transform: rotate(0deg);
@@ -50,7 +47,6 @@
         transform: rotate(360deg);
     }
 }
-
 
 .login-form input[type=text]{
     background: none;

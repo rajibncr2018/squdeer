@@ -43,7 +43,6 @@ Route::group(['prefix'=>'api'],function(){
     Route::post('/staff_list','Api\StaffsController@staff_list');
 
     Route::post('/add_client','Api\ClientsController@add_client');
-    Route::post('/client_list','Api\ClientsController@client_list');
 
 });
 

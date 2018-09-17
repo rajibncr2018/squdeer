@@ -38,7 +38,8 @@ Squeedr
                </div>
             </div>
             <div class="stf-list heightfull">
-            <?php 
+            <?php
+                //echo '<pre>'; print_r($staff_list);
                 if(!empty($staff_list)){
                     foreach($staff_list as $staff){
             ?>
@@ -134,7 +135,7 @@ Squeedr
                                         <div class="row">
                                         <div class="col-sm-10">
                                             <h4>Login Allowed</h4>
-                                            <p>Restrict Jason to login next time. Allow Jason to view/manage/block dates and times for their schedule
+                                            <p id="loginAllowedMsg">Restrict Jason to login next time. Allow Jason to view/manage/block dates and times for their schedule
                                                 only. Staff can also search customers but cannot export the customer list
                                             </p>
                                         </div>
@@ -253,6 +254,10 @@ $('.stafflistitem').click(function(){
     $('#staffDesc').html("");
     if(data.description !== undefined){
         $('#staffDesc').html(data.description);
+    }
+    $('#loginAllowedMsg').html("");
+    if(data.full_name !== undefined){
+        $('#loginAllowedMsg').html("Restrict "+data.full_name+" to login next time. Allow "+data.full_name+" to view/manage/block dates and times for their schedule only. Staff can also search customers but cannot export the customer list");
     }
     $('#bookingUrl').html("");
     if(data.booking_url !== undefined){
