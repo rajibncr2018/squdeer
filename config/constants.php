@@ -12,6 +12,8 @@ return [
         'user_token' => 'user_token',
         'staff' => 'staff',
         'client' => 'client',
+        'user_email_customisation' => 'user_email_customisation',
+        'appointment' => 'appointment',
 
 
     ],

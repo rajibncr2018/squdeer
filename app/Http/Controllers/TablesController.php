@@ -22,7 +22,8 @@ class TablesController {
         $this->tableUserService = config('constants.tables.user_service');
         $this->tableNameUserRequestKey = config('constants.tables.user_token');
         $this->tableNameClient = config('constants.tables.client');
-        
+        $this->tableNameUserEmailCustomisation = config('constants.tables.user_email_customisation');
+        $this->tableNameAppointment = config('constants.tables.appointment');
 
 
         

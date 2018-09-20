@@ -96,12 +96,20 @@ class UsersController extends ApiController {
 	//***** User Registartion step 2 *****//
 	public function registration_step2()
 	{
-		$conditions = array(
-                        array('is_blocked', '=', 0),
-                    );
-		$data['category'] = $this->master_data_list($table=$this->tableObj->tableNameCategory);
-		$data['currency'] = $this->master_data_list($table=$this->tableObj->tableNameCurrency);
-        return view('website.user.registration.registration2',$data);
+		if($_COOKIE['new_email'])
+		{
+			$conditions = array(
+	                        array('is_blocked', '=', 0),
+	                    );
+			$data['category'] = $this->master_data_list($table=$this->tableObj->tableNameCategory);
+			$data['currency'] = $this->master_data_list($table=$this->tableObj->tableNameCurrency);
+	        return view('website.user.registration.registration2',$data);
+		}
+		else
+		{
+			return redirect('login');
+		}
+		
 	}
 
 	
@@ -184,7 +192,36 @@ class UsersController extends ApiController {
 
 	public function calendar()
 	{
-		return view('website.calendar');
+		$authdata = $this->website_login_checked();
+		if((empty($authdata['user_no']) || ($authdata['user_no']<=0)) || (empty($authdata['user_request_key']))){
+           return redirect('/login');
+		}
+		// Call API //
+		$post_data = $authdata;
+		$post_data['page_no']=1;
+		$data=array(
+			'appoinment_list'=>array(),
+			'authdata'=>$authdata
+		);
+		$url_func_name="appoinment_list";
+		$return = $this->curl_call($url_func_name,$post_data);
+		
+		// Check response status. If success return data //		
+		if(isset($return->response_status))
+		{
+			if($return->response_status == 1)
+			{
+				$data['appoinment_list'] = $return->appoinment_list;
+			}
+			//echo '<pre>'; print_r($data); exit;
+			return view('website.calendar')->with($data);
+		}
+		else
+		{
+			return $return;
+		}
+
+
 	}
 
 
@@ -538,6 +575,16 @@ class UsersController extends ApiController {
 		}
 
 		return view('website.profile-login');
+	}
+
+	public function help()
+	{
+		if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'])
+		{
+			return view('website.help');
+		}
+
+		return view('website.help');
 	}
 
 	

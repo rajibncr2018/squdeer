@@ -112,31 +112,40 @@ $('#loginform').validate({
             dataType: "json",
             success: function(response) {
                 console.log(response);
-                if(response.result==1){
-                    var user_no = response.user.user_no;
-                    var user_type = response.user.user_type;
-                    var user_request_key = response.user.user_request_key;
-                    var device_token_key = "";
-                    //console.log(data['0']);
-                    // get the user no and the request key for farther service calls
-                    if($('input[name="remember_me"]').is(':checked')){
-                        $.cookie("UserEmail", data['0'].value, { expires: 365 });
-                        $.cookie("UserPassword", data['1'].value, { expires: 365 });
-                    } else {
-                        $.cookie("UserEmail", '');
-                        $.cookie("UserPassword", '');
+                if(response.result==1)
+                {
+                    if(response.message=='complete_step_two')
+                    {
+                       var url = "{{url('/registration-step2')}}";
+                       window.location.href = url; 
                     }
+                    else
+                    {
+                        var user_no = response.user.user_no;
+                        var user_type = response.user.user_type;
+                        var user_request_key = response.user.user_request_key;
+                        var device_token_key = "";
+                        //console.log(data['0']);
+                        // get the user no and the request key for farther service calls
+                        if($('input[name="remember_me"]').is(':checked')){
+                            $.cookie("UserEmail", data['0'].value, { expires: 365 });
+                            $.cookie("UserPassword", data['1'].value, { expires: 365 });
+                        } else {
+                            $.cookie("UserEmail", '');
+                            $.cookie("UserPassword", '');
+                        }
 
-                    $.cookie("sqd_user_no", user_no, { expires: 30, path:'/' });
-                    $.cookie("sqd_user_type", user_type, { expires: 30, path:'/' });
-                    $.cookie("sqd_user_request_key", user_request_key, { expires: 30, path:'/' });
-                    $.cookie("sqd_device_token_key", device_token_key, { expires: 30, path:'/' });
+                        $.cookie("sqd_user_no", user_no, { expires: 30, path:'/' });
+                        $.cookie("sqd_user_type", user_type, { expires: 30, path:'/' });
+                        $.cookie("sqd_user_request_key", user_request_key, { expires: 30, path:'/' });
+                        $.cookie("sqd_device_token_key", device_token_key, { expires: 30, path:'/' });
 
-                    
-                    var url = "{{url('/dashboard')}}";
-                    console.log(url);
-                    //alert(url);
-                    window.location=url;
+                        
+                        var url = "{{url('/dashboard')}}";
+                        console.log(url);
+                        //alert(url);
+                        window.location=url;
+                    }
                 }
                 else{
                     

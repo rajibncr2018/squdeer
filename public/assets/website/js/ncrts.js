@@ -253,7 +253,7 @@ $(".chnage-service-status").click(function (e) {
             $('.animationload').hide();
             if(response.result=='1')
             {
-                swal("Success!", response.message, "success")
+                swal("Success!", response.message, "success");
             }
             else
             {
@@ -353,6 +353,132 @@ $(".chnage-service-status").click(function (e) {
         });
         }
         });
+
+
+$(".email_cutomisation_form").submit(function(e) {
+    // Getting the form ID
+    e.preventDefault();
+    var  formID = $(this).attr('id');
+    var formDetails = $('#'+formID);
+    data = formDetails.serializeArray();
+    data = addCommonParams(data);
+
+    var action = formDetails.attr('action');
+
+    $.ajax({
+      type: "POST",
+      url: action,
+      data: data,
+      dataType: "json",
+      beforeSend: function() {
+          $('.animationload').show();
+      },
+      success: function(response) {
+          console.log(response); //Success//
+          if (response.response_status == 1) {
+            $('.animationload').hide();
+            swal('Success!', response.response_message, 'success');
+          } else {
+            swal('Sorry!', response.response_message, 'error');
+          }
+        }
+    });
+});
+
+//================Submit AJAX request for add new appoinment ==================
+ $('#add_appointmentm_form').validate({
+
+       ignore: ":hidden:not(.selectpicker)",
+
+       rules: {
+           client: {
+               required: true
+           },
+           appoinment_service: {
+               required: true
+           },
+           staff: {
+               required: true
+           },
+           date: {
+               required: true
+           },
+           appointmenttime: {
+               required: true
+           },
+           appoinment_note: {
+               required: true
+           },
+       },
+       
+       messages: {
+           client: {
+               required: 'Client is required'
+           },
+           appoinment_service: {
+               required: 'Service is required'
+           },
+           staff: {
+               required: 'Staff is required'
+           },
+           date: {
+               required: 'Date is required'
+           },
+           appointmenttime: {
+               required: 'Time is required'
+           },
+           appoinment_note: {
+               required: 'Note is required'
+           },
+       },
+
+       submitHandler: function(form) {
+         var data = $(form).serializeArray();
+         data = addCommonParams(data);
+         console.log(data);
+         $.ajax({
+             url: form.action,
+             type: form.method,
+             data:data ,
+             dataType: "json",
+             success: function(response) {
+               console.log(response);
+               if(response.result=='1')
+               {
+                    $('.animationload').hide();
+                    $("#myModaladdappoinment").hide();
+                    $("#add_appointmentm_form").trigger("reset");
+                    swal({title: "Good job", text: response.message, type: "success"},
+                       function(){ 
+                           location.reload();
+                       }
+                    );
+                    //swal("Success!", response.message, "success")
+                    /*setTimeout(function()
+                    {
+                        window.location.reload();
+                   
+                    }, 1000);*/
+               }
+               else
+               {
+                   swal("Error", response.message , "error");
+               }
+             },
+             beforeSend: function(){
+                 $('.animationload').show();
+             },
+             complete: function(){
+                 $('.animationload').hide();
+             }
+         });
+       }
+   });
+ //================Submit AJAX request add new appoinment ==================
+
+
+
+
         
 
 

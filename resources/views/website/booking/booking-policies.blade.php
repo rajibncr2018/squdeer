@@ -39,12 +39,12 @@ Squeedr
       <div class="leftpan">
          <div class="left-menu">
             <ul>
-               <li><a href="{{ url('booking-options') }}"> Clients Booking Flow</a></li>
+               <li><a href="{{ url('booking-options') }}" > Clients Booking Flow</a></li>
                <li><a href="{{ url('booking-rules') }}"> Booking Rules</a> </li>
                <li><a href="{{ url('booking-policies') }}" class="active"> Booking Policies</a></li>
                <li><a href="{{ url('notification-settings') }}"> Notification Settings</a></li>
-               <li><a href="{{ url('email-confirmation') }}"> Email Customisation</a> </li>
-            </ul>
+               <li><a href="{{ url('email-customisation') }}"> Email Customisation</a> </li>
+             </ul>
          </div>
       </div>
       <div class="rightpan">

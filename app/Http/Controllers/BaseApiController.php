@@ -419,10 +419,22 @@ class BaseApiController extends BaseController
                     $mailTemplateName="emails/general";
                     $emailData['mailBody']=$mail_body;
                 break;
-                case 5: // Staff Email Verification 
+                case 6: // Staff Email Verification 
                     $mail_subject = "Client Successfully Added.";
                     //$mail_body="Here is the Login Credentails of your accont. Username : ".$emailData['username']." Password : ".$emailData['password'];
                     $mail_body = "Dear <br> ".$emailData['toName'].", Your are successfully added as a client on Squeedr.";
+                    $mailTemplateName="emails/general";
+                    $emailData['mailBody']=$mail_body;
+                break;
+                case 7: // appontment booking mail for client 
+                    $mail_subject = "Appointmnet Created.";
+                    $mail_body = $emailData['email_data'];
+                    $mailTemplateName="emails/general";
+                    $emailData['mailBody']=$mail_body;
+                break;
+                case 8: // appontment booking mail for stuff 
+                    $mail_subject = "Appointmnet Created.";
+                    $mail_body = $emailData['email_data'];
                     $mailTemplateName="emails/general";
                     $emailData['mailBody']=$mail_body;
                 break;
@@ -577,19 +589,6 @@ class BaseApiController extends BaseController
 
     /** timezone*/
 
-    /*public function time_zone()
-    {
-        $zones_array = array();
-        $timestamp = time();
-        foreach(timezone_identifiers_list() as $key => $zone)
-        {
-            date_default_timezone_set($zone);
-            $zones_array[$key]['zone'] = $zone;
-            $zones_array[$key]['diff_from_GMT'] = 'UTC/GMT ' . date('P', $timestamp);
-        }
-        return $zones_array;
-    }*/
-
     public static function time_zone()
     {
         $data = array();
@@ -607,6 +606,69 @@ class BaseApiController extends BaseController
         //echo '<pre>'; print_r($data); exit;
         return $data;
     }
+
+    public static function services_list()
+    {
+        $data = array();
+        $obj = new Request();
+        $ci = new BaseApiController($obj);
+        $table = $ci->tableObj->tableUserService;
+        $user_id = $_COOKIE['sqd_user_no'];
+
+        $conditions = array(
+            array('is_blocked', '=', 0),
+            array('is_deleted', '=', 0),
+            array('user_id', '=', $user_id)
+        );
+
+        $service_list = $ci->common_model->fetchDatas($table, $conditions);
+        $data = array('service_list'=>$service_list);
+        //echo '<pre>'; print_r($data); exit;
+        return $data;
+    }
+
+    public static function clients_list()
+    {
+        $data = array();
+        $obj = new Request();
+        $ci = new BaseApiController($obj);
+        $table = $ci->tableObj->tableNameClient;
+        $user_id = $_COOKIE['sqd_user_no'];
+
+        $conditions = array(
+            array('is_blocked', '=', 0),
+            array('is_deleted', '=', 0),
+            array('user_id', '=', $user_id)
+        );
+
+        $client_list = $ci->common_model->fetchDatas($table, $conditions);
+        $data = array('client_list'=>$client_list);
+        //echo '<pre>'; print_r($data); exit;
+        return $data;
+    }
+
+    public static function stuffs_list()
+    {
+        $data = array();
+        $obj = new Request();
+        $ci = new BaseApiController($obj);
+        $table = $ci->tableObj->tableNameStaff;
+        $user_id = $_COOKIE['sqd_user_no'];
+
+        $conditions = array(
+            array('is_blocked', '=', 0),
+            array('is_deleted', '=', 0),
+            array('user_id', '=', $user_id)
+        );
+
+        $stuff_list = $ci->common_model->fetchDatas($table, $conditions);
+        $data = array('stuff_list'=>$stuff_list);
+        //echo '<pre>'; print_r($data); exit;
+        return $data;
+    }
+
+    
+    
 
 }
 

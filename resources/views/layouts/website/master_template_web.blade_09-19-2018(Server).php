@@ -8,8 +8,7 @@
       <meta name="author" content="">
       <title> @yield('title') </title>
      <link rel="stylesheet" href="{{asset('public/assets/website/css/bootstrap.min.css')}}" />
-      <!-- <link href="https://fonts.googleapis.com/css?family=Lato:300,400,500,600,700" rel="stylesheet"> -->
-      <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Lato:300,400,500,600,700" rel="stylesheet">
       <link rel="stylesheet" type="text/css" href="{{asset('public/assets/website/my-icons-collection/font/flaticon.css')}}">
       <link rel="stylesheet" href="{{asset('public/assets/website/css/font-awesome.min.css')}}" />
       <link rel="stylesheet" href="{{asset('public/assets/website/css/animate.css')}}" />
@@ -20,11 +19,10 @@
       <link href="{{asset('public/assets/website/css/custom-selectbox.css')}}" rel="stylesheet">
       <link href="{{asset('public/assets/website/css/custom.css')}}" rel="stylesheet">
       <link href="{{asset('public/assets/website/css/slide-menu.css')}}" rel="stylesheet">
-      <link href="{{asset('public/assets/website/plugins/sweetalert/sweetalert.css')}}" rel="stylesheet">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.css">
       <link href="{{asset('public/assets/website/css/ncrts.css')}}" rel="stylesheet">
       <link rel="stylesheet" href="{{asset('public/assets/website/css/owl.carousel.min.css')}}">
       <link rel="stylesheet" href="{{asset('public/assets/website/css/autocompletestyles.css')}}">
-      <link rel="stylesheet" href="{{asset('public/assets/website/css/bootstrap-select.min.css')}}" />
       <script type="text/javascript">
 		  var authDatas={user_no:0}; 
 		  var device_token_key="<?php echo Session::getId()?>"; 
@@ -36,22 +34,16 @@
       <?php 
       $basicdatas = App\Http\Controllers\BaseApiController::category_list(); 
       function get_times( $default = '00:00', $interval = '+30 minutes' ) { 
-         $output = '<option value="">Select Time</option>'; 
+         $output = '<option value=""></option>'; 
          $current = strtotime( '00:00' ); 
          $end = strtotime( '23:59' ); 
-         while( $current <= $end ) 
-         { 
-            $time = date( 'h:i A', $current ); 
-            $sel = ( $time == $default ) ? ' selected' : ''; 
-            $output .= "<option value=\"{$time}\"{$sel}>" . date( 'h.i A', $current ) .'</option>'; 
-            $current = strtotime( $interval, $current ); 
+         while( $current <= $end ) { 
+            $time = date( 'H:i', $current ); $sel = ( $time == $default ) ? ' selected' : ''; $output .= "<option value=\"{$time}\"{$sel}>" . date( 'h.i A', $current ) .'</option>'; $current = strtotime( $interval, $current ); 
          } 
          return $output; 
       } 
       $timezone = App\Http\Controllers\BaseApiController::time_zone(); 
-      $services_list = App\Http\Controllers\BaseApiController::services_list();
-      $clients_list = App\Http\Controllers\BaseApiController::clients_list();
-      $stuffs_list = App\Http\Controllers\BaseApiController::stuffs_list(); 
+      $services_list = App\Http\Controllers\BaseApiController::service_list(); 
       ?> 
       <div class="animationload" style="display: none;">
          <div class="osahanloading"></div>
@@ -72,7 +64,7 @@
                   <a id="c-button--slide-right" class="c-button quick-add"><i class="flaticon-four-squares"></i></a> 
                   <div class="dropdown prof-menu" href="#">
                      <a href="#" class=" dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <img class="user-pic" src="{{asset('public/assets/website/images/user-img.png')}}"></a> 
-                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> <a class="dropdown-item" href="#"> <i class="fa fa-share-alt" aria-hidden="true"></i> Share links</a> <a class="dropdown-item" href="{{ url('calendar') }}"> <i class="fa fa-calendar" aria-hidden="true"></i> Calendar Connections</a> <a class="dropdown-item" href="{{ url('profile-settings') }}"> <i class="fa fa-cog" aria-hidden="true"></i> Profile settings</a> <a class="dropdown-item" href="#"> <i class="fa fa-id-card " aria-hidden="true"></i> Memebership</a><a class="dropdown-item" href="{{ url('invitees') }}"> <i class="fa fa-user" aria-hidden="true"></i> Invitees</a> <a class="dropdown-item" href="{{ url('staff-details') }}"> <i class="fa fa-user" aria-hidden="true"></i> Users</a> <a class="dropdown-item" href="#"> <i class="fa fa-question-circle " aria-hidden="true"></i> Help</a> <a class="dropdown-item" href="{{ url('/logout') }}"> <i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a> </div>
+                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> <a class="dropdown-item" href="#" data-toggle="modal" data-target="#myModalsharelinks"> <i class="fa fa-share-alt" aria-hidden="true"></i> Share links</a> <a class="dropdown-item" href="{{ url('calendar') }}"> <i class="fa fa-calendar" aria-hidden="true"></i> Calendar Connections</a> <a class="dropdown-item" href="{{ url('profile-settings') }}"> <i class="fa fa-cog" aria-hidden="true"></i> Profile settings</a> <a class="dropdown-item" href="#"> <i class="fa fa-id-card " aria-hidden="true"></i> Memebership</a><a class="dropdown-item" href="{{ url('invitees') }}"> <i class="fa fa-user" aria-hidden="true"></i> Invitees</a> <a class="dropdown-item" href="{{ url('staff-details') }}"> <i class="fa fa-user" aria-hidden="true"></i> Users</a> <a class="dropdown-item" href="{{ url('help') }}"> <i class="fa fa-question-circle " aria-hidden="true"></i> Help</a> <a class="dropdown-item" href="{{ url('/logout') }}"> <i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a> </div>
                   </div>
                   <div class="main-nav">
                      <!--<a href="#" class="settings">Settings</a> --> <a href="{{ url('client-database') }}" class="sm"><i class="flaticon-multiple-users-silhouette"></i> <span>Clients</span></a> <a href="{{ url('reports') }}" class="sm"><i class="flaticon-progress-report"></i> <span>Reports</span></a> <a href="{{ url('gift-certificates') }}"><i class="flaticon-megaphone"></i> <span>Marketing</span></a> <a href="{{ url('calendar') }}"><i class="flaticon-calendar"></i><span> <span>Calendar</span></a> <a href="{{ url('dashboard') }}"><i class="flaticon-dashboard"></i> <span>Dashboard</span></a> 
@@ -635,6 +627,68 @@
             </div>
          </div>
       </div>
+
+ <!--====================================Modal area start ====================================--> 
+ <div class="modal fade" id="myModalsharelinks" role="dialog">
+         <div class="modal-dialog add-pop">
+            <!-- Modal content-->
+            <div class="modal-content new-modalcustm new-modalcustm1">
+            <form name="add_client_form" id="add_client_form" method="post" action="{{url('api/add_client')}}" enctype="multipart/form-data">
+               <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Share Links</h4>
+               </div>
+               <div class="modal-body clr-modalbdy">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="form-group">
+                            <span>Copy Your Link</span>
+                           <div class="input-group" id="clientname_error">                           
+                              <input id="client_name" type="text" class="form-control" name="client_name" value="squeedr.com/chebalger">
+                              <button type="button" class=shl-btns><i class="fa fa-link"></i></button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="form-group">
+                            <span>Email Your Link</span>
+                           <div class="input-group" id="clientname_error">                           
+                              <input id="client_name" type="text" class="form-control" name="client_name" value="squeedr.com/chebalger">
+                              <button type="button" class=shl-btns><i class="fa fa-envelope-o"></i></button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="form-group">
+                            <span>Embed on Your Website</span>
+                           <div class="input-group" id="clientname_error">                           
+                              <input id="client_name" type="text" class="form-control" name="client_name" value="squeedr.com/chebalger">
+                              <button type="button" class=shl-btns><i class="fa fa-code"></i></button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                
+               
+               
+              <!-- 
+               <div class="modal-footer">
+                  <div class="col-md-12 text-center">
+                     <button type="submit" class="btn btn-primary butt-next" style="margin: 0px auto 0; width: 150px; display: block">Submit</button>
+                  </div>
+               </div>
+                                -->
+              </form>
+            </div>
+         </div>
+      </div>
+
+
+
 	  <div class="modal fade" id="myModalnewteam" role="dialog">
          <div class="modal-dialog add-pop">
             <!-- Modal content-->
@@ -1361,31 +1415,16 @@
          <div class="modal-dialog add-pop">
             <!-- Modal content--> 
             <div class="modal-content new-modalcustm">
-               <form name="add_appointmentm_form" id="add_appointmentm_form" method="post" action="{{ url('api/add_appoinment') }}" enctype="multipart/form-data">
+               <form name="add_appointmentm_form" id="add_appointmentm_form" method="post" action="" enctype="multipart/form-data">
                <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button> 
                   <h4 class="modal-title"> Add Appointments</h4>
                </div>
                <div class="modal-body clr-modalbdy">
-                     <div class="row">
-                        <div class="col-sm-12">
-                           <div class="form-group">
-                              <div class="input-group"> <span class="input-group-addon"><i class="fa fa-users"></i></span> 
-                                 <div class="form-group nomarging color-b" >
-                                    <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="client" id="client"> 
-                                       <option value="">Select Client</option>
-                                       <?php
-                                       foreach ($clients_list['client_list'] as $key => $cli)
-                                       {
-                                       ?>
-                                       <option value="<?=$cli->client_id;?>"><?=$cli->client_name;?></option>
-                                       <?php
-                                       }
-                                       ?>
-                                    </select>
-                                 </div>
-                                <!--  <input id="client" type="text" class="form-control" name="client" placeholder="Client"> </div> -->
-                           </div>
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <div class="form-group">
+                           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-users"></i></span> <input id="client" type="text" class="form-control" name="client" placeholder="Client"> </div>
                         </div>
                      </div>
                   </div>
@@ -1394,49 +1433,31 @@
                         <div class="form-group">
                            <div class="input-group">
                               <span class="input-group-addon"><i class="fa fa-cog"></i></span> 
-                              <div class="form-group nomarging color-b" >
-                                 <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="appoinment_service" id="appoinment_service"> 
-                                    <option value="">Select Service</option>
-                                    <?php
-                                    foreach ($services_list['service_list'] as $key => $serv)
-                                    {
-                                    ?>
-                                    <option value="<?=$serv->service_id;?>"><?=$serv->service_name;?></option>
-                                    <?php
-                                    }
-                                    ?>
-                                 </select>
-                                <div class="clearfix"></div>
+                              <div class="form-group nomarging custom-select color-b" >
+                                    <select name="booking_service" id="booking_service">
+                                       <option value="">Select Service</option>
+                                       <?php
+                                       foreach ($services_list['service_list'] as $key => $serv)
+                                       {
+                                       ?>
+                                       <option value="<?=$serv->service_id;?>"><?=$serv->service_name;?></option>
+                                       <?php
+                                       }
+                                       ?>
+                                    </select>
+                                 <div class="clearfix"></div>
                               </div>
                            </div>
                         </div>
                      </div>
                   </div>
-
                   <div class="row">
-                     <div class="col-md-12">
+                     <div class="col-sm-12">
                         <div class="form-group">
-                           <div class="input-group">
-                              <span class="input-group-addon"><i class="fa fa-user"></i></span> 
-                              <div class="form-group nomarging color-b" >
-                                 <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="staff" id="staff"> 
-                                    <option value="">Select Staff</option>
-                                    <?php
-                                    foreach ($stuffs_list['stuff_list'] as $key => $stf)
-                                    {
-                                    ?>
-                                    <option value="<?=$stf->staff_id;?>"><?=$stf->full_name;?></option>
-                                    <?php
-                                    }
-                                    ?>
-                                 </select>
-                                <div class="clearfix"></div>
-                              </div>
-                           </div>
+                           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-user"></i></span> <input id="staff" type="text" class="form-control" name="staff" placeholder="Staff"> </div>
                         </div>
                      </div>
                   </div>
-                  
                   <div class="row">
                      <div class="col-sm-12">
                         <div class="form-group">
@@ -1445,67 +1466,49 @@
                      </div>
                   </div>
                   <div class="row">
-                     <div class="col-sm-12">
-                        <div class="form-group">
-                           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-calendar"></i></span> <input id="appointmenttime" type="text" class="form-control" name="appointmenttime" placeholder="Time"> </div>
-                        </div>
-                     </div>
-                  </div>
-                  <!-- <div class="row">
                      <div class='col-sm-12'>
                         <div class="form-group">
                            <div class="input-group">
                               <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
-                              <div class="form-group nomarging color-b" >
-
-                                 <select lass="selectpicker" data-show-subtext="true" data-live-search="true" name="appointmenttime" id="appointmenttime" onmousedown="if(this.options.length>8){this.size=8;}" onchange='this.size=0;' onblur="this.size=0;"> <?php echo get_times(); ?> </select> 
+                              <div class="form-group nomarging custom-select color-b" >
+                                 <select id="appointmenttime" onmousedown="if(this.options.length>8){this.size=8;}" onchange='this.size=0;' onblur="this.size=0;"> <?php echo get_times(); ?> </select> 
                                  <div class="clearfix"></div>
                               </div>
                            </div>
                         </div>
                      </div>
-                  </div> -->
+                  </div>
                   <div class="row">
                      <div class='col-sm-12'>
                         <div class="form-group">
                            <ul class="colors">
-                              <li class="bgred activeColor active" data-colour='#F74242'></li>
-                              <li class="bgyellow activeColor" data-colour="#E7B152" ></li>
-                              <li class="bggrn activeColor" data-colour="#4BB950" ></li>
-                              <li class="bglightgrn activeColor" data-colour="#32C197" ></li>
-                              <li class="bgblue activeColor" data-colour="#4C80D4"></li>
+                              <li class="bgred" onclick="activeColor(this);"></li>
+                              <li class="bgyellow" onclick="activeColor(this);"></li>
+                              <li class="bggrn" onclick="activeColor(this);"></li>
+                              <li class="bglightgrn" onclick="activeColor(this);"></li>
+                              <li class="bgblue active" onclick="activeColor(this);"></li>
                            </ul>
-                           <input type="hidden" name="colour_code" value="#F74242" id="colour_code">
                            <h2>Set the Color</h2>
+                           <input id="" type="text" class="form-control" name="" placeholder="Type here" style="border-left:1px solid #ccc"> 
                         </div>
                      </div>
                   </div>
                   <div class="row">
                      <div class="col-md-12">
-                        <div class="form-group">
-                           <div class="input-group textarea-md"> <span class="input-group-addon"><i class="fa fa-file"></i></span>
-                              <textarea style="width: 100%" name="appoinment_note" id="appoinment_note" placeholder="Note"></textarea>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col-md-12">
-                        <div class="form-group"> <input name="apoinment_mail" type="checkbox" value="true"> Send Email confirmation </div>
+                        <div class="form-group"> <input name="" type="checkbox" value=""> Send Email confirmation </div>
                      </div>
                   </div>
                </div>
                <div class="modal-footer">
-                  <div class="col-md-12 text-center"> 
-                     <input type="submit" id="submit_appointmentm_form" class="btn btn-primary butt-next" style="margin: 0px auto 0; width: 150px; display: block" name="submit" value="submit">
-                     <!-- <button type="button" >Submit</button> --> </div>
+                  <div class="col-md-12 text-center"> <button type="button" id="submit_appointmentm_form" class="btn btn-primary butt-next" style="margin: 0px auto 0; width: 150px; display: block">Submit</button> </div>
                </div>
             </form>
             </div>
          </div>
       </div>
-      <!--====================================Modal area End ========================================--> 
-	<script src="{{asset('public/assets/website/js/jquery.min.js')}}"></script>
+      <!-- Add Appoitment -->
+      <!--====================================Modal area End =====================================--> 
+	  <script src="{{asset('public/assets/website/js/jquery.min.js')}}"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="{{asset('public/assets/website/js/parallax.min.js')}}"></script>
 	<script src="{{asset('public/assets/website/js/script.js')}}"></script>
@@ -1514,13 +1517,10 @@
 	<script src="{{asset('public/assets/website/js/dataTables.bootstrap.min.js')}}"></script>
 	<script src="{{asset('public/assets/website/js/owl.carousel.js')}}"></script>
 	<script src="{{asset('public/assets/website/js/jquery.autocomplete.min.js')}}"></script> <!-- Sweetalert -->
-	<script src="{{asset('public/assets/website/plugins/sweetalert/sweetalert.min.js')}}"></script> <!-- jQuery Cookie -->
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script> <!-- jQuery Cookie -->
 	<script src="{{asset('public/assets/website/js/jquery.cookie.min.js')}}"></script>
 	<!-- Form Validation -->
 	<script src="{{asset('public/assets/website/js/jquery.validate.min.js')}}"></script>
-
-   <script src="{{asset('public/assets/website/js/bootstrap-select.min.js')}}"></script>
 	
 	<script type="text/javascript">
 		function slideDiv(obj) {
@@ -1798,47 +1798,33 @@
 				});
 				}
 				});
-				/*var client = [
-            <?php
-            foreach ($clients_list['client_list'] as $key => $cli)
-            {
-            ?>
-            {
-					value: '<?=$cli->client_name;?>',
-					data: '<?=$cli->client_id;?>'
-				},
-            <?php
-            }
-            ?> 
-
-            ];
-
-            var staff = [
-            <?php
-            foreach ($stuffs_list['stuff_list'] as $key => $stf)
-            {
-            ?>
-            {
-               value: '<?=$stf->full_name;?>',
-               data: '<?=$stf->staff_id;?>'
-            },
-            <?php
-            }
-            ?> 
-
-            ];*/
-
+				var countries = [{
+					value: 'Pradipta Barik',
+					data: '1'
+				}, {
+					value: 'Rajib Jana',
+					data: '2'
+				}, {
+					value: 'Souvik Bose',
+					data: '3'
+				}, {
+					value: 'Ayan Banerjee',
+					data: '4'
+				}, {
+					value: 'Sudip Ghosh',
+					data: '5'
+				}, {
+					value: 'Monaj Das',
+					data: '6'
+				}, {
+					value: 'Mrinmoy Das',
+					data: '7'
+				}];
 				$('#client').autocomplete({
-					lookup: client,
-               mustMatch:true,
-               showNoSuggestionNotice:true,
-               triggerSelectOnValidInput:false,
+					lookup: countries,
 				});
 				$('#staff').autocomplete({
-					lookup: staff,
-               mustMatch:true,
-               showNoSuggestionNotice:true,
-               triggerSelectOnValidInput:false
+					lookup: countries,
 				});
 	</script>
 	<script>
@@ -1953,15 +1939,6 @@
        $('#specialnote_count').text('HTML Tags not allowed, '+count+' characters remaining');
      }
    };
-   </script>
-   <script type="text/javascript">
-      $(".activeColor").click(function()
-      {
-         let colour_code = $(this).attr('data-colour');
-         $(".activeColor").removeClass('active');
-         $('#colour_code').val(colour_code);
-         $(this).addClass('active');
-      });
    </script>
 	<script src="{{asset('public/assets/website/js/ncrts.js')}}"></script>
 	  @yield('custom_js') 

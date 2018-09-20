@@ -48,19 +48,49 @@ class UsersController extends ApiController {
 			}
 			else
 			{
-				//echo '<pre>'; print_r($user); exit;
-				$is_blocked = $user->is_blocked;
-				if($is_blocked == 0)
+
+				$service_conditions = array(
+						array('user_id', '=', $user->id),
+				);
+				$service = $this->common_model->fetchDatas($this->tableObj->tableUserService,$service_conditions,$selectFields=array());
+				//check user complete registration step2 or not
+				if(empty($service))
 				{
-					$created_on = strtotime($user->created_on);
-					//checked is the email is verified or not 
-					if($user->is_email_verified == 0 || $user->is_email_verified == 1)
+					setcookie('new_email', $email, time() + (86400 * 30), "/");
+					$this->response_status='1';
+					$this->response_message = "complete_step_two";
+				}
+				else
+				{
+					//echo '<pre>'; print_r($user); exit;
+					$is_blocked = $user->is_blocked;
+					if($is_blocked == 0)
 					{
-						//If user is registered within 3days
-						/*if(($created_on + (72*3600)) >= time() )
-						{*/
-							// create the user request key for validating the farther request of the user
-							$this->logged_user_no = $user->id;
+						$created_on = strtotime($user->created_on);
+						//checked is the email is verified or not 
+						if($user->is_email_verified == 0 || $user->is_email_verified == 1)
+						{
+							//If user is registered within 3days
+							/*if(($created_on + (72*3600)) >= time() )
+							{*/
+								// create the user request key for validating the farther request of the user
+								$this->logged_user_no = $user->id;
+								$user_request_key = $this->generate_request_key();
+								$user_details['user_no']=$this->logged_user_no;
+								$user_details['user_type']=$user->user_type;
+								$user_details['user_request_key']=$user_request_key;
+								//$user_details['is_basic_data_saved']=$user->is_basic_data_saved;
+								$response_data['user']=$user_details;
+								$this->response_status='1';
+							/*}
+							else
+							{
+								$this->response_message="email_need_to_verify_for_login";
+							}*/
+						}
+						else
+						{
+							$this->logged_user_no = $user->user_no;
 							$user_request_key = $this->generate_request_key();
 							$user_details['user_no']=$this->logged_user_no;
 							$user_details['user_type']=$user->user_type;
@@ -68,27 +98,12 @@ class UsersController extends ApiController {
 							//$user_details['is_basic_data_saved']=$user->is_basic_data_saved;
 							$response_data['user']=$user_details;
 							$this->response_status='1';
-						/*}
-						else
-						{
-							$this->response_message="email_need_to_verify_for_login";
-						}*/
+						}
 					}
 					else
 					{
-						$this->logged_user_no = $user->user_no;
-						$user_request_key = $this->generate_request_key();
-						$user_details['user_no']=$this->logged_user_no;
-						$user_details['user_type']=$user->user_type;
-						$user_details['user_request_key']=$user_request_key;
-						//$user_details['is_basic_data_saved']=$user->is_basic_data_saved;
-						$response_data['user']=$user_details;
-						$this->response_status='1';
+						$this->response_message="account_blocked";
 					}
-				}
-				else
-				{
-					$this->response_message="account_blocked";
 				}
 			}
 		}
@@ -526,10 +541,9 @@ class UsersController extends ApiController {
 		$email = $_COOKIE['new_email'];
 
 		$emailCodtion = array(
-	                        array('email','=',$email),
+	                     'or'=>array('email'=>$email,'username'=>$email)
 	                    );
 	    $checkEmail = $this->common_model->fetchData($this->tableObj->tableNameUser,$emailCodtion);
-
 	    $count = 0;
 	    foreach ($category as $key => $value)
 	    {
